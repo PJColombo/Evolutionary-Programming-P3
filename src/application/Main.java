@@ -1,14 +1,7 @@
 package application;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-
-import application.model.p1.model.genetic_algorithm.GeneticAlgorithm;
 import application.view.ChartController;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 
@@ -26,7 +19,7 @@ public class Main extends Application {
 		try {
 			this.primaryStage = primaryStage;
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("view/chartView.fxml"));
+			loader.setLocation(Main.class.getResource("view/ChartView.fxml"));
 			this.root = loader.load();
 			Scene scene = new Scene(this.root,1200,600);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
