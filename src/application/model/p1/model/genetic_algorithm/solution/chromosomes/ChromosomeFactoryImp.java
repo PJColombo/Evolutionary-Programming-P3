@@ -3,6 +3,7 @@ package application.model.p1.model.genetic_algorithm.solution.chromosomes;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.model.p1.model.genetic_algorithm.solution.chromosomes.p3.ProgramChromosome;
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
 import application.model.p1_utils.Pair;
 
@@ -31,6 +32,14 @@ public class ChromosomeFactoryImp extends ChromosomeFactory {
 			defaultIntervals.add(new Pair<>(4.1, 5.8));
 			return new Function1(0.001, true, defaultIntervals);
 		}
+	}
+
+	@Override
+	public Chromosome<? extends Gene<?>> createAntChromosome(String chromosome, double tolerance, Boolean maximize,
+			Integer genesNumber, Integer depth, boolean isHalf) {
+		if(chromosome.equalsIgnoreCase("ant"))
+			return new ProgramChromosome(maximize, depth, isHalf);
+		return null;
 	}
 
 

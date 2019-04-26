@@ -7,6 +7,8 @@ import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.progr
 
 public class IfFoodFunctionCommand implements Command {
 
+	private int numChild = 2;
+
 	@Override
 	public void execute(List<ProgramTree> parameters) {
 		//TODO call model and ask for food.
@@ -17,6 +19,16 @@ public class IfFoodFunctionCommand implements Command {
 			else
 				parameters.get(1).getRoot().execute(parameters.get(0).getChildren());
 		}
+	}
+
+	@Override
+	public int getNumOfChilds() {
+		return this.numChild;
+	}
+	
+	@Override
+	public String toString() {
+		return "SIC";
 	}
 
 }

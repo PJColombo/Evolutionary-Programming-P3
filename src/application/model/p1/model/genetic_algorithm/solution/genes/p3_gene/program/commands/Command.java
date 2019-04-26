@@ -6,4 +6,5 @@ import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.progr
 
 public interface Command {
 	void execute(List<ProgramTree> commands);
+	int getNumOfChilds();
 }
