@@ -35,8 +35,8 @@ public class ChromosomeFactoryImp extends ChromosomeFactory {
 	}
 
 	@Override
-	public Chromosome<? extends Gene<?>> createAntChromosome(String chromosome, double tolerance, Boolean maximize,
-			Integer genesNumber, Integer depth, boolean isHalf) {
+	public Chromosome<? extends Gene<?>> createAntChromosome(String chromosome, Boolean maximize,
+			 Integer depth, boolean isHalf) {
 		if(chromosome.equalsIgnoreCase("ant"))
 			return new ProgramChromosome(maximize, depth, isHalf);
 		return null;

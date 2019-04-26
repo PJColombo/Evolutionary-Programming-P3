@@ -17,6 +17,5 @@ public abstract class ChromosomeFactory {
 	public abstract Chromosome<? extends Gene<?>> createChromosome(String chromosome, double tolerance, Boolean maximize, List<Pair<Double, 
 				Double>> intervals, Integer genesNumber, int[][] distances, int distancesSize, int initialFinalCity);
 	
-	public abstract Chromosome<? extends Gene<?>> createAntChromosome(String chromosome, double tolerance, Boolean maximize,
-			Integer genesNumber, Integer depth, boolean isHalf);
+	public abstract Chromosome<? extends Gene<?>> createAntChromosome(String chromosome, Boolean maximize, Integer depth, boolean isHalf);
 }

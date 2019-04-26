@@ -7,9 +7,9 @@ import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.progr
 public class DebugMain {
 
 	public static void main(String[] args) {
-//		GeneticAlgorithm ge = new GeneticAlgorithm(null, "TSP", 27, 100, "roullete", "pmx", 0.6, "hrt_swap", 0.05, 0.0, false, "roullete");
+		GeneticAlgorithm ge = new GeneticAlgorithm(null, "TSP", 200, 100, "roullete", "pmx", 0.6, "hrt_swap", 0.05, 0.0, false, "roullete");
 //		
-//		ge.execute();
+		ge.execute();
 		
 		/*Character[][] c = new Character[2][32];
 		c[0] = new Character[]{'0', '0', '0', '#', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '#', '0', '0', '0', '0', '#', '0', '0'};
@@ -19,10 +19,8 @@ public class DebugMain {
 			System.out.println("board[" + i + "] =");
 		}*/
 		
-		for (int i = 0; i < 200; i++) {
-			ProgramChromosome p = new ProgramChromosome(true, 5, false);
-			System.out.println("Arbol " + i + ": " + p.toString());
-		}
+		// donde 200 es el tamaño de la poblacion
+		
 		
 	}
 

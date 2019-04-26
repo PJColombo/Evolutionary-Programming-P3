@@ -14,6 +14,7 @@ import application.model.p1.model.genetic_algorithm.selection_algorithms.Selecti
 import application.model.p1.model.genetic_algorithm.selection_algorithms.SelectionAlgorithmFactory;
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.Chromosome;
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.ChromosomeFactory;
+import application.model.p1.model.genetic_algorithm.solution.chromosomes.p3.ProgramChromosome;
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
 import application.model.p1_utils.FitnessComparator;
 import application.model.p1_utils.Pair;
@@ -42,6 +43,7 @@ public class GeneticAlgorithm {
 	private String crossoverOperator;
 	private String mutationOperator;
 	private Integer crosspointsNum;
+	private int maxDepth = 5;
 	
 	
 	private String restSelectionAlgorithm;
@@ -110,7 +112,8 @@ public class GeneticAlgorithm {
 		List<Stat> stats = new ArrayList<>(this.maxGenNumber);
 		List<Chromosome<? extends Gene<?>>> elite = new ArrayList<>(eliteSize);
 
-		this.createInitialPopulation();		
+		this.createInitialPopulation();	
+		this.printPopulation();
 		stats.add(this.evaluatePopulation());
 		while(this.generations < this.maxGenNumber) {
 			this.generations++;
@@ -133,8 +136,16 @@ public class GeneticAlgorithm {
 		return stats;
 	}
 	private void createInitialPopulation() {
-		for (int i = 0; i < this.popSize; i++)
-			this.population.add(ChromosomeFactory.getInstance().createChromosome(this.function, this.tolerance, null, null, this.nVariables, TSPDistances._DISTANCES, TSPDistances.size, 25));
+		int currentDepth = 1;
+		int mod = 200 / (this.maxDepth - 1);
+		int mod2 = (mod)/ 2;
+		boolean isFull = false;
+		for (int i = 0; i < this.popSize; i++) {
+			if( i % mod == 0) currentDepth++;
+			if( i % mod2 == 0) isFull = !isFull; 
+			this.population.add(ChromosomeFactory.getInstance().createAntChromosome("ant", true, currentDepth, isFull));
+		}
+			
 	}
 	
 	public Stat evaluatePopulation() {
