@@ -4,22 +4,26 @@ import java.util.ArrayList;
 
 
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.commands.Command;
+import application.model.p3_board.Board;
 
 public class ProgramTree {
 	private Command root;
 	private ArrayList<ProgramTree> children;
 	private int height;
+	private Board board;
 	
 	public ProgramTree() {}
 	
-	public ProgramTree(Command root) {
+	public ProgramTree(Command root, Board board) {
 		this.root = root;
+		this.board = board;
 		children = new ArrayList<ProgramTree>();
 		height = 1;
 	}
 	
 	public ProgramTree(ProgramTree pt) {
 		root = pt.root;
+		board = board;
 		for (ProgramTree programTree : children) {
 			children.add(programTree.clone());
 		}
@@ -33,7 +37,7 @@ public class ProgramTree {
 	
 	
 	public void executeTree() {
-		root.execute(children);
+		root.execute(children, board);
 	}
 
 	public Command getRoot() {

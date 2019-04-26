@@ -6,6 +6,7 @@ import java.util.List;
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.Chromosome;
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.TreeGene;
+import application.model.p3_board.Board;
 
 public class ProgramChromosome extends Chromosome<TreeGene> { 
 	

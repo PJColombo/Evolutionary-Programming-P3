@@ -10,7 +10,7 @@ public class Board {
 	private final int DEFAULT_WIDTH = 32;
 	private final double FOOD_PERCENTAGE = 0.2; 
 	
-	protected Character[][] board;
+	protected char[][] board;
 	
 	protected Ant ant;
 	public Board() {
@@ -27,9 +27,14 @@ public class Board {
 			w = width;
 		else
 			w = DEFAULT_WIDTH;
-		board = new Character[h][w];
+		board = new char[h][w];
 	}
 	
+	public Board(Board b) {
+		board = new char[b.board.length][];
+		for (int i = 0; i < board.length; i++)
+			board[i] = b.board[i].clone();
+	}
 	public void moveAnt() {
 		Pair<Integer, Integer> pos;
 		pos = ant.getCurrPos();
@@ -67,6 +72,11 @@ public class Board {
 		}
 	}
 	
+	
+	public Ant getAnt() {
+		return ant;
+	}
+
 	private ArrayList<Boolean> createRandomFilledArray(int n) {
 		ArrayList<Boolean> filledArray = new ArrayList<Boolean>(n);
 		double p;
@@ -76,4 +86,5 @@ public class Board {
 		}
 		return filledArray;
 	}
+	
 }
