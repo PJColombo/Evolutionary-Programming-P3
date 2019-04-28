@@ -13,6 +13,7 @@ public class Board {
 	protected char[][] board;
 	
 	protected Ant ant;
+	
 	public Board() {
 		this.ant = new Ant(new Pair<Integer, Integer>(0,0), Direction.EAST);
 	}
@@ -34,6 +35,7 @@ public class Board {
 		board = new char[b.board.length][];
 		for (int i = 0; i < board.length; i++)
 			board[i] = b.board[i].clone();
+		ant = b.ant.clone();
 	}
 	public void moveAnt() {
 		Pair<Integer, Integer> pos;
@@ -85,6 +87,10 @@ public class Board {
 			filledArray.add(p < FOOD_PERCENTAGE);	
 		}
 		return filledArray;
+	}
+	
+	public Board clone() {
+		return new Board(this);
 	}
 	
 }

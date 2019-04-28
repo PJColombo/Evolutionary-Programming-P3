@@ -6,6 +6,7 @@ import java.util.List;
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.p3.ProgramChromosome;
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
 import application.model.p1_utils.Pair;
+import application.model.p3_board.Board;
 
 public class ChromosomeFactoryImp extends ChromosomeFactory {
 
@@ -35,13 +36,11 @@ public class ChromosomeFactoryImp extends ChromosomeFactory {
 	}
 
 	@Override
-	public Chromosome<? extends Gene<?>> createP3Chromosome(String chromosome, Boolean maximize, String prebuiltBoard) {
-		switch(chromosome.toLowerCase()) {
-		case "programchromosome":
-			return null;
-		default:
-			return null;
-		}
+	public Chromosome<? extends Gene<?>> createAntChromosome(String chromosome, Boolean maximize,
+			 Integer depth, boolean isHalf, Board board) {
+		if(chromosome.equalsIgnoreCase("ant"))
+			return new ProgramChromosome(maximize, depth, isHalf, board);
+		return null;
 	}
-	
+
 }

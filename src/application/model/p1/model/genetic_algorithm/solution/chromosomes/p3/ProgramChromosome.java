@@ -12,7 +12,7 @@ public class ProgramChromosome extends Chromosome<TreeGene> {
 	
 	private int maxHeight = 5; 
 	
-	public ProgramChromosome(Boolean maximize, Integer maxHeight) {
+	public ProgramChromosome(Boolean maximize, Integer maxHeight, boolean isHalf, Board board) {
 		super();
 		if(maximize != null)
 			this.maximize = maximize;
@@ -22,7 +22,7 @@ public class ProgramChromosome extends Chromosome<TreeGene> {
 			this.maxHeight = maxHeight;
 		genes = new ArrayList<TreeGene>(1);
 		for(int i = 0; i < 1; i++) {
-			genes.add(new TreeGene());
+			genes.add(new TreeGene(maxHeight, isHalf, board));
 			chromosomeLength += genes.get(i).getSize();
 		}
 		fitness = this.calculateFitness();
@@ -87,6 +87,13 @@ public class ProgramChromosome extends Chromosome<TreeGene> {
 	public void setMaxHeight(int maxHeight) {
 		this.maxHeight = maxHeight;
 	}
-
 	
+	@Override
+	public String toString() {
+		return genes.get(0).toString();
+	}
+	
+	public Board getFinalBoard() {
+		return this.genes.get(0).getFinalBoard();
+	}
 }

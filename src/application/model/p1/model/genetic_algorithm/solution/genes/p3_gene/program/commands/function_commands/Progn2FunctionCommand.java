@@ -8,6 +8,8 @@ import application.model.p3_board.Board;
 
 public class Progn2FunctionCommand implements Command {
 
+	private int numChild = 2;
+
 	@Override
 	public void execute(List<ProgramTree> parameters, Board board) {
 		if(parameters.size() == 2) {
@@ -16,4 +18,13 @@ public class Progn2FunctionCommand implements Command {
 		}
 	}
 
+	@Override
+	public int getNumOfChilds() {
+		return this.numChild ;
+	}
+	
+	@Override
+	public String toString() {
+		return "PROGN2";
+	}
 }

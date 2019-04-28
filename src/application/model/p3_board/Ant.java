@@ -1,6 +1,5 @@
 package application.model.p3_board;
 
-import java.util.ArrayList;
 
 import application.model.p1_utils.Pair;
 
@@ -15,6 +14,11 @@ public class Ant {
 		foodCounter = 0;
 	}
 	
+	public Ant(Ant ant) {
+		currPos = new Pair<>(ant.currPos.getLeftElement(), ant.currPos.getRightElement());
+		currDir = ant.currDir;
+		foodCounter = ant.foodCounter;
+	}
 	public void incrementFoodCounter() {
 		foodCounter++;
 	}
@@ -46,5 +50,7 @@ public class Ant {
 		this.currDir = currDir;
 	}
 	
-	
+	public Ant clone() {
+		return new Ant(this);
+	}
 }

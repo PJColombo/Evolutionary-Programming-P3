@@ -93,42 +93,6 @@ public class ChartController implements Initializable{
     //P2 Opt
     
     @FXML
-    private CheckBox comparativeStudyCB;
-    
-    @FXML
-    private TextField crossIntervalMinTF;
-
-    @FXML
-    private TextField crossIntervalMaxTF;
-    
-    @FXML
-    private TextField mutIntervalMinTF;
-    
-    @FXML
-    private TextField mutIntervalMaxTF;
-    
-    @FXML
-    private TextField elitismPercentageTF;
-    
-    @FXML
-    private Slider elitPerSlid;
-    
-    @FXML
-    private ComboBox<String> showFunctionComboBox;
-    
-    @FXML
-    private Label crossoverIntervalL;
-    
-    @FXML
-    private Label mutationIntervalL;
-    
-    @FXML
-    private Label showL;
-    
-    @FXML
-    private Label elitismPercentageL;
-    
-    @FXML
     private ComboBox<String> restSelAlgorithm;
     
     //------------------------------------------
@@ -139,12 +103,6 @@ public class ChartController implements Initializable{
     private Integer nVariables;
     private Integer nCrosspoints;
     
-    //P2
-    private double intMinCross;
-    private double intMaxCross;
-    private double intMinMut;
-    private double intMaxMut;
-    private double elitPerc;
     
     private static final String[] RGB_COLORS = {"rgba(51, 102, 255, 1.0)", "rgba(255, 26, 26, 1.0)", "rgba(41, 163, 41, 1.0)", "rgb(204, 0, 255)", 
     		"rgb(0, 51, 0)", "rgb(102, 153, 153)", "rgb(153, 255, 51)", "rgb(153, 0, 153)", "rgb(102, 0, 102)", "rgb(153, 102, 51)",
@@ -152,7 +110,6 @@ public class ChartController implements Initializable{
     		"rgb(102, 153, 0)", "rgb(0, 0, 0)", "rgb(230, 230, 230)", "rgb(153, 102, 255)", "rgb(171, 156, 201)", "rgb(69, 54, 99)", "rgb(0, 51, 153)",
     		"rgb(204, 0, 153)"};
     
-    private final double INTERVAL_UNIT = 0.05;
     
     public ChartController(){}
     
@@ -165,9 +122,7 @@ public class ChartController implements Initializable{
     //private final ObservableList<String> listMutationAlgorithms = FXCollections.observableArrayList("Conventional", "Inversion", "Swap", "reversal", "tsp_swap", "ins_swap", "hrt_swap", "exc_swap");
     private final ObservableList<String> listMutationAlgorithms = FXCollections.observableArrayList("Reversal", "TSP_Swap", "Ins_Swap", "Hrt_Swap", "Exc_Swap");
     
-    private final ObservableList<String> listRestAlgorithms = FXCollections.observableArrayList("Roulette", "Tournament", "Probabilistic_tournament", "Stochastic", "Truncation", "Ranking");
-    private final ObservableList<String> showFunctionList = FXCollections.observableArrayList("General best individual", "Generation best individual", "Average generation fitness");
-    
+  
     
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -209,30 +164,7 @@ public class ChartController implements Initializable{
         	crossPercentage.setText(df.format(newValue.doubleValue()));
         });
         
-        //P2------------
         
-        comparativeStudyCB.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                ChartController.this.disableComparativeStudySection(!newValue);
-            }
-        });
-        
-        showFunctionComboBox.setItems(showFunctionList);
-        showFunctionComboBox.getSelectionModel().select(0);
-        
-        elitismPercentageTF.setText("0.2");
-        
-        elitPerSlid.valueProperty().addListener((obs, oldValue, newValue) -> {
-        	NumberFormat nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
-        	DecimalFormat df = (DecimalFormat) nf;
-        	
-        	elitismPercentageTF.setText(df.format(newValue.doubleValue()));
-        });
-        
-
-        restSelAlgorithm.setItems(listRestAlgorithms);
-        restSelAlgorithm.getSelectionModel().select(0);
       
     }
 
@@ -265,7 +197,6 @@ public class ChartController implements Initializable{
     public void run(ActionEvent e){
     	List<Stat> stats = null;
     	ArrayList<XYChart.Series<String, Number>> series = new ArrayList<>();
-    	double crossPerc, mutPerc;
     	boolean elitism, validParameters = true;
         //Call the model
     	
@@ -276,52 +207,6 @@ public class ChartController implements Initializable{
             chart.getYAxis().setLabel("Fitness");
             
             
-    		if(comparativeStudyCB.isSelected()) {
-    			validParameters = this.checkComparativeStudyFields();
-    			if(validParameters) {
-    				XYChart.Series<String,Number> s; 
-    				String seriesName; 
-    				crossPerc = intMinCross; mutPerc = intMinMut;
-    				boolean crossPercCompleted, mutPercCompleted;
-    				crossPercCompleted = mutPercCompleted = false;
-    				while(!crossPercCompleted || !mutPercCompleted) {  
-    					elitism = ThreadLocalRandom.current().nextDouble() < elitPerc;
-    					System.out.println("Elitism" + elitism);
-    					crossPerc = RoundDecimal.twoDecimalNumber(crossPerc);
-    					mutPerc = RoundDecimal.twoDecimalNumber(mutPerc);
-    					ge = new GeneticAlgorithm(nVariables, function.getValue(), arg[0].intValue(), arg[1].intValue(), selAlgorithm.getValue(), 
-    							crossAlgorithm.getValue(), crossPerc, mutationAlgorithm.getValue(), mutPerc, arg[4], elitism, restSelAlgorithm.getValue());
-    					ge.setCrosspointsNum(nCrosspoints);
-    		    		stats = this.ge.execute();
-
-    		    		seriesName = "C" + crossPerc + "M" + mutPerc;
-    		    		if(elitism)
-    		    			seriesName += "E";
-    		    		s = this.createSeries(seriesName, showFunctionComboBox.getSelectionModel().getSelectedItem(), stats);
-    		    		series.add(s);
-    		    		chart.getData().add(s);
-    		    		
-    					crossPerc += INTERVAL_UNIT;
-    					mutPerc += INTERVAL_UNIT;
-    					
-    					if(crossPerc > intMaxCross) {
-    						crossPercCompleted = true;
-    						crossPerc = intMaxCross;
-    					}
-    					if(mutPerc > intMaxMut) {
-    						mutPercCompleted = true;
-    						mutPerc = intMaxMut;
-    					}
-    					
-    	    	        this.errorMsg.appendText(System.lineSeparator() + seriesName + System.lineSeparator() + "________________________________"
-    	                		+ System.lineSeparator() + stats.get(stats.size() - 1));
-    	                this.errorMsg.appendText("Best Individual " + System.lineSeparator() + "_______________________-"
-    	                		+ System.lineSeparator() + ge.getBestSolution() + System.lineSeparator() + "==========================================================================");
-    	                
-    				}
-    			}
-    		}
-    		else {
     			elitism = arg[5] == 1.0;
     			ge = new GeneticAlgorithm(nVariables, function.getValue(), arg[0].intValue(), arg[1].intValue(), selAlgorithm.getValue(), 
         				crossAlgorithm.getValue(), arg[2], mutationAlgorithm.getValue(), arg[3], arg[4], elitism, restSelAlgorithm.getValue());
@@ -356,7 +241,7 @@ public class ChartController implements Initializable{
                 series.add(absolutBest_series);
                 series.add(generationBest_series);
                 series.add(avgGeneration_series);
-    		}
+    		
     		
     		if(validParameters) {    			
     			this.setSeriesStyle(series);
@@ -517,93 +402,8 @@ public class ChartController implements Initializable{
         this.selAlgorithm.getSelectionModel().select(0);
         this.crossAlgorithm.getSelectionModel().select(2);
         this.mutationAlgorithm.getSelectionModel().select(0);
-        
-        this.clearComparativeStudyFields();
-    }
-
-    private void clearComparativeStudyFields() {
-    	this.elitPerSlid.setValue(0.20);
-        this.crossIntervalMinTF.setText("");
-        this.crossIntervalMaxTF.setText("");
-        this.mutIntervalMinTF.setText("");
-        this.mutIntervalMaxTF.setText("");
-    }
-    
-    private void disableComparativeStudySection(boolean disable) {
-    	elitPerSlid.setDisable(disable);
-    	crossIntervalMinTF.setDisable(disable);
-    	crossIntervalMaxTF.setDisable(disable);
-    	mutIntervalMinTF.setDisable(disable);
-    	mutIntervalMaxTF.setDisable(disable);
-    	showFunctionComboBox.setDisable(disable);
-    	elitismPercentageTF.setDisable(disable);
-    	
-    	crossoverIntervalL.setDisable(disable);
-    	mutationIntervalL.setDisable(disable);
-    	showL.setDisable(disable);
-    	elitismPercentageL.setDisable(disable);
-    	
-    }
-    
-    private Boolean checkComparativeStudyFields() {
-    	Boolean res = true;
-    	String intervalName = "";
-    	boolean crossEmpty = false;
-    	if(this.comparativeStudyCB.isSelected()) {
-    		try {
-    			if(crossIntervalMinTF.getText().length() > 0 && crossIntervalMaxTF.getText().length() > 0) {    				
-    				intMinCross = Double.parseDouble(crossIntervalMinTF.getText());
-    				intMaxCross = Double.parseDouble(crossIntervalMaxTF.getText());
-    			}
-    			else {
-    				if(crossIntervalMaxTF.getText().length() > 0 && crossIntervalMinTF.getText().length() == 0 ||
-    						crossIntervalMaxTF.getText().length() == 0 && crossIntervalMinTF.getText().length() > 0)
-    					return false;
-    				else {
-    					intMinCross = intMaxCross = Double.parseDouble(crossPercentage.getText());
-    					crossEmpty = true;
-    				}
-    			}
-    			if(mutIntervalMinTF.getText().length() > 0 && mutIntervalMaxTF.getText().length() > 0) {
-    				intMinMut = Double.parseDouble(mutIntervalMinTF.getText());
-    				intMaxMut = Double.parseDouble(mutIntervalMaxTF.getText());    				
-    			}
-    			else {
-    				if(mutIntervalMaxTF.getText().length() > 0  && mutIntervalMinTF.getText().length() == 0 ||
-    						mutIntervalMaxTF.getText().length() == 0 && mutIntervalMinTF.getText().length() > 0)
-    					return false;
-    				else {
-    					if(crossEmpty)
-    						return false;
-    					else
-    						intMinMut = intMaxMut = Double.parseDouble(mutPorcentage.getText());
-    				}
-    			}
-    			
-    			elitPerc = Double.parseDouble(elitismPercentageTF.getText()); 
-    			
-    			if(intMinCross > intMaxCross || intMinCross < 0 || intMinCross > 1 ||
-    					intMaxCross < 0 || intMaxCross > 1) {
-    				intervalName = "crossover";
-    				res = false;
-    			}
-    			else if (intMinMut > intMaxMut || intMinMut < 0 || intMinMut > 1 ||
-    					intMaxMut < 0 || intMaxMut > 1) {
-    				intervalName = "mutation";
-    				res = false;
-    			}
-    			if(!res) {
-    				errorMsg.appendText("Please type in a valid " + intervalName + " interval.");
-    				return false;
-    			}
-    		}catch(NumberFormatException e) {
-    			errorMsg.appendText("Please type in numerical parameters for the study comparative.");
-    			return false;
-    		}
-    		res = true;
-    	}
-    	return res;
-    }
+       
+    }   
     
     private XYChart.Series<String,Number> createSeries(String seriesName, String dataType, List<Stat> stats) {
     	XYChart.Series<String,Number> s = new XYChart.Series<>();

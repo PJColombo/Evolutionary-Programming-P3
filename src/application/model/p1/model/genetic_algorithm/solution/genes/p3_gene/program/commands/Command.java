@@ -7,4 +7,5 @@ import application.model.p3_board.Board;
 
 public interface Command {
 	void execute(List<ProgramTree> commands, Board board);
+	int getNumOfChilds();
 }

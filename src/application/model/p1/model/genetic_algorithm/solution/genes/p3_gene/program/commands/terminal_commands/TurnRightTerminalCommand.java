@@ -8,9 +8,22 @@ import application.model.p3_board.Board;
 
 public class TurnRightTerminalCommand implements Command {
 
+	private int numChild = 0;
+
+
 	@Override
 	public void execute(List<ProgramTree> commands, Board board) {
 		board.getAnt().turn(false);
 	}
 
+	
+	@Override
+	public int getNumOfChilds() {
+		return this.numChild ;
+	}
+	
+	@Override
+	public String toString() {
+		return "DERECHA";
+	}
 }

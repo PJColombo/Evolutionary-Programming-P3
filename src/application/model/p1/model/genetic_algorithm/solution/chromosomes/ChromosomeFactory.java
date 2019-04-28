@@ -4,6 +4,7 @@ import java.util.List;
 
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
 import application.model.p1_utils.Pair;
+import application.model.p3_board.Board;
 
 public abstract class ChromosomeFactory {
 	private static ChromosomeFactory chromosomeFactory;
@@ -17,5 +18,5 @@ public abstract class ChromosomeFactory {
 	public abstract Chromosome<? extends Gene<?>> createChromosome(String chromosome, double tolerance, Boolean maximize, List<Pair<Double, 
 				Double>> intervals, Integer genesNumber, int[][] distances, int distancesSize, int initialFinalCity);
 	
-	public abstract Chromosome<? extends Gene<?>> createP3Chromosome(String chromosome, Boolean maximize, String prebuiltBoard);
+	public abstract Chromosome<? extends Gene<?>> createAntChromosome(String chromosome, Boolean maximize, Integer depth, boolean isHalf, Board board);
 }

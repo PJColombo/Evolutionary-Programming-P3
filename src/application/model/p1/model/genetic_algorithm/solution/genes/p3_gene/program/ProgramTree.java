@@ -57,4 +57,24 @@ public class ProgramTree {
 	public ProgramTree clone() {
 		return new ProgramTree(this);
 	}
+	
+	@Override
+	public String toString() {
+		String retVal = this.root.toString();
+		//System.out.println(retVal);
+		if(this.root.getNumOfChilds() == 2) {
+			/*System.out.println("(" + this.children.get(0).toString() + "," + this.children.get(1).toString() + ")");*/
+			retVal += "(" + this.children.get(0).toString() + "," + this.children.get(1).toString() + ")";
+		}
+		else if(this.root.getNumOfChilds() == 3) {
+			/*System.out.println("(" + this.children.get(0).toString() + "," + this.children.get(1).toString() + ")"
+					+ "," + this.children.get(2).toString() + ")");*/
+			retVal += "(" + this.children.get(0).toString() + "," + this.children.get(1).toString()
+					+ "," + this.children.get(2).toString() + ")";
+			
+			
+		}
+		
+		return retVal;
+	}
 }
