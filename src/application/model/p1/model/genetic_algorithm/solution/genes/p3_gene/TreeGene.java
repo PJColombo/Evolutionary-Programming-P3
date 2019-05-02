@@ -23,6 +23,7 @@ public class TreeGene extends Gene<ProgramTree> {
 	private Board initialBoard;
 	/*board which contains ant path.*/
 	private Board finalBoard;
+	private int numOfTerminals;
 	
 	public TreeGene(Integer maxDepth, boolean isHalf, Board initialBoard) {
 		super();
@@ -32,7 +33,7 @@ public class TreeGene extends Gene<ProgramTree> {
 		this.isHalf = isHalf;
 		this.initialBoard = initialBoard;
 		finalBoard = initialBoard.clone();
-		
+		this.numOfTerminals = 0;
 		initializeGene();
 		decodeGene();
 	}
@@ -84,10 +85,10 @@ public class TreeGene extends Gene<ProgramTree> {
 		return new TreeGene(this);
 	}
 
+	
 	@Override
-	public void mutate(int allelePos) {
-		// TODO Auto-generated method stub
-		
+	public void mutate(int flag) {
+		exeMutation(this.alleles.get(0), flag);
 	}
 
 	@Override
@@ -128,6 +129,7 @@ public class TreeGene extends Gene<ProgramTree> {
 	 *  - Una funcion
 	 *  - Un terminal
 	 *  - Aleatorio
+	 *  - Una funcion de 2 hijos
 	 */
 	private int randomSelector(int num) {
 		int elem;
@@ -140,6 +142,9 @@ public class TreeGene extends Gene<ProgramTree> {
 			break;
 		case 2:
 			elem = ThreadLocalRandom.current().nextInt(0, 6);
+			break;
+		case 3:
+			elem = ThreadLocalRandom.current().nextInt(0, 2);
 			break;
 		default:
 			elem = ThreadLocalRandom.current().nextInt(0, 6);
@@ -164,6 +169,34 @@ public class TreeGene extends Gene<ProgramTree> {
 		default:
 			return new MoveForwardTerminalCommand();
 		}
+	}
+	
+	/**
+	 * 
+	 * @param node: El nodo que estamos recorriendo
+	 * @param flag: Para determinar si es una mutación de terminal (0) o de function (1)
+	 * @return un boolean para saber si se ha producido ya la mutación
+	 */
+	private boolean exeMutation(ProgramTree node, int flag) {
+		boolean isMutated = false;
+		if((flag == 0) ? node.isTerminal() : node.isFunction()) {
+			double prob = ThreadLocalRandom.current().nextDouble();
+			if (prob < 0.5) {
+				return false; 
+			}else if(node.getRoot().getNumOfChilds() == 2 && flag == 1){
+				node.setRoot(pickCommand(randomSelector(3)));
+				return true;
+			}else if(flag == 0){
+				node.setRoot(pickCommand(randomSelector(1)));
+				return true;
+			}else return false;
+		}
+		else {
+			for (int i = 0; i < node.getChildren().size() && !isMutated; i++) {
+				isMutated = exeMutation(node.getChildren().get(i), flag);
+			}
+		}
+		return isMutated;
 	}
 	
 	public int executeGeneTree() {

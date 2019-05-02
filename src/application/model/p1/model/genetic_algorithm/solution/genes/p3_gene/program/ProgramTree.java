@@ -53,6 +53,10 @@ public class ProgramTree {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+	
+	public void setRoot(Command newRoot) {
+		root = newRoot;
+	}
 	public ArrayList<ProgramTree> getChildren() {
 		return children;
 	}
@@ -63,6 +67,14 @@ public class ProgramTree {
 	
 	public ProgramTree clone() {
 		return new ProgramTree(this);
+	}
+	
+	public boolean isTerminal() {
+		return (root.getNumOfChilds() == 0) ? true : false;
+	}
+	
+	public boolean isFunction() {
+		return (root.getNumOfChilds() > 0) ? true : false;
 	}
 	
 	@Override
