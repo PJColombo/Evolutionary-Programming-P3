@@ -12,7 +12,7 @@ public class Progn3FunctionCommand implements Command {
 	
 	@Override
 	public void execute(List<ProgramTree> parameters, Board board) {
-		if(parameters.size() == 3) {
+		if(parameters.size() == 3 && board.areActionUnitsLeft()) {
 			parameters.get(0).getRoot().execute(parameters.get(0).getChildren(), board);
 			parameters.get(1).getRoot().execute(parameters.get(1).getChildren(), board);
 			parameters.get(2).getRoot().execute(parameters.get(2).getChildren(), board);

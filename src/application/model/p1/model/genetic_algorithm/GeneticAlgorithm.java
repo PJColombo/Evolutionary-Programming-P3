@@ -14,7 +14,7 @@ import application.model.p1.model.genetic_algorithm.selection_algorithms.Selecti
 import application.model.p1.model.genetic_algorithm.selection_algorithms.SelectionAlgorithmFactory;
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.Chromosome;
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.ChromosomeFactory;
-import application.model.p1.model.genetic_algorithm.solution.chromosomes.p3.ProgramChromosome;
+import application.model.p1.model.genetic_algorithm.solution.chromosomes.p3_chromosome.ProgramChromosome;
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
 import application.model.p1_utils.FitnessComparator;
 import application.model.p1_utils.Pair;
@@ -144,10 +144,9 @@ public class GeneticAlgorithm {
 		for (int i = 0; i < this.popSize; i++) {
 			if( i % mod == 0) currentDepth++;
 			if( i % mod2 == 0) isFull = !isFull; 
-			//TODO change hardcoded santa fe board for generic board. ?
+			//TODO change hardcoded santa fe board for generic board and harcoded ant chromosome ?
 			this.population.add(ChromosomeFactory.getInstance().createAntChromosome("ant", true, currentDepth, isFull, new SantaFeBoard()));
 		}
-			
 	}
 	
 	public Stat evaluatePopulation() {
@@ -214,7 +213,10 @@ public class GeneticAlgorithm {
 	private void reproduce() {
 		Pair<? extends Chromosome<? extends Gene<?>>, ? extends Chromosome<? extends Gene<?>>> childChromosomes = new Pair<>();
 		List<Integer> selectedCrossoverIndexSol = new ArrayList<>();
-		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm(this.crossoverOperator, this.crossoverProbability, this.crosspointsNum, 25);
+//		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm(this.crossoverOperator, this.crossoverProbability, this.crosspointsNum, 25);
+	
+		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm("treeswap", 0.7, 0, 25);
+
 		double prop; 
 		//Get selected solutions.
 		for (int i = 0; i < this.population.size(); i++) {
@@ -235,7 +237,6 @@ public class GeneticAlgorithm {
 			childChromosomes = crossOperator.chromosomeCrossover(this.population.get(parentPos1),
 					this.population.get(parentPos2));
 			
-			//TODO Pick replacement algorithm. Call replacement factory
 			this.population.set(parentPos1, childChromosomes.getLeftElement());
 			this.population.set(parentPos2, childChromosomes.getRightElement());
 		}

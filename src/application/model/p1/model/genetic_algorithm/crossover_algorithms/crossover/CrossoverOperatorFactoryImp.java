@@ -10,6 +10,7 @@ import application.model.p1.model.genetic_algorithm.crossover_algorithms.crossov
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.crossover.operators.evolutive_tsp.PartiallyMappedCrossover;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.crossover.operators.evolutive_tsp.PositionOrderCrossover;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.crossover.operators.evolutive_tsp.PriorityOrderCrossover;
+import application.model.p1.model.genetic_algorithm.crossover_algorithms.crossover.operators.p3_operators.TreeSwapCrossover;
 
 public class CrossoverOperatorFactoryImp extends CrossoverOperatorFactory {
 	
@@ -36,6 +37,8 @@ public class CrossoverOperatorFactoryImp extends CrossoverOperatorFactory {
 			return new PositionOrderCrossover(crossoverProbability);
 		else if(type.equalsIgnoreCase("diagonal"))
 			return new DiagonalCrossover(crossoverProbability, initialFinalCity);
+		else if(type.equalsIgnoreCase("treeswap"))
+			return new TreeSwapCrossover(crossoverProbability);
 		else
 			return new OnePointCrossover(crossoverProbability);
 		

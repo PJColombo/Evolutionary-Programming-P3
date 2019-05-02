@@ -3,7 +3,7 @@ package application.model.p1.model.genetic_algorithm.solution.chromosomes;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.model.p1.model.genetic_algorithm.solution.chromosomes.p3.ProgramChromosome;
+import application.model.p1.model.genetic_algorithm.solution.chromosomes.p3_chromosome.ProgramChromosome;
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
 import application.model.p1_utils.Pair;
 import application.model.p3_board.Board;

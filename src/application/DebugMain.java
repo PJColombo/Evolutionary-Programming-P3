@@ -3,7 +3,7 @@ package application;
 import java.util.Arrays;
 
 import application.model.p1.model.genetic_algorithm.GeneticAlgorithm;
-import application.model.p1.model.genetic_algorithm.solution.chromosomes.p3.ProgramChromosome;
+import application.model.p1.model.genetic_algorithm.solution.chromosomes.p3_chromosome.ProgramChromosome;
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.ProgramTree;
 
 public class DebugMain {

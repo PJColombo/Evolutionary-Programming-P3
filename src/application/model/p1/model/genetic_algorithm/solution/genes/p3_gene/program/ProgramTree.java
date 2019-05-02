@@ -1,7 +1,7 @@
 package application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program;
 
 import java.util.ArrayList;
-
+import java.util.concurrent.ThreadLocalRandom;
 
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.commands.Command;
 import application.model.p3_board.Board;
@@ -23,8 +23,9 @@ public class ProgramTree {
 	
 	public ProgramTree(ProgramTree pt) {
 		root = pt.root;
-		board = board;
-		for (ProgramTree programTree : children) {
+		board = pt.board;
+		children = new ArrayList<ProgramTree>(pt.children.size());
+		for (ProgramTree programTree : pt.children) {
 			children.add(programTree.clone());
 		}
 	}
@@ -33,11 +34,13 @@ public class ProgramTree {
 		children.add(t);
 		height += t.getHeight();
 	}
-
 	
-	
+	public boolean hasChildren() {
+		return children.size() > 0;
+	}
 	public void executeTree() {
-		root.execute(children, board);
+		while(board.areActionUnitsLeft())
+			root.execute(children, board);
 	}
 
 	public Command getRoot() {
@@ -54,6 +57,10 @@ public class ProgramTree {
 		return children;
 	}
 	
+	public int getAntFoodEated() {
+		return board.getAnt().getFoodCounter();
+	}
+	
 	public ProgramTree clone() {
 		return new ProgramTree(this);
 	}
@@ -61,14 +68,10 @@ public class ProgramTree {
 	@Override
 	public String toString() {
 		String retVal = this.root.toString();
-		//System.out.println(retVal);
 		if(this.root.getNumOfChilds() == 2) {
-			/*System.out.println("(" + this.children.get(0).toString() + "," + this.children.get(1).toString() + ")");*/
 			retVal += "(" + this.children.get(0).toString() + "," + this.children.get(1).toString() + ")";
 		}
 		else if(this.root.getNumOfChilds() == 3) {
-			/*System.out.println("(" + this.children.get(0).toString() + "," + this.children.get(1).toString() + ")"
-					+ "," + this.children.get(2).toString() + ")");*/
 			retVal += "(" + this.children.get(0).toString() + "," + this.children.get(1).toString()
 					+ "," + this.children.get(2).toString() + ")";
 			

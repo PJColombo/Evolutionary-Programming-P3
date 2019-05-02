@@ -6,9 +6,16 @@ import java.util.concurrent.ThreadLocalRandom;
 import application.model.p1_utils.Pair;
 
 public class Board {
-	private final int DEFAULT_HEIGHT = 32;
-	private final int DEFAULT_WIDTH = 32;
+	private final static int 
+			DEFAULT_HEIGHT = 32,
+			DEFAULT_WIDTH = 32;
 	private final double FOOD_PERCENTAGE = 0.2; 
+	private final static char 
+			FOOD_CELL = '#',
+			EMPTY_CELL = '0',
+			CURR_CELL = '@';
+	
+	private Integer maxActionUnits = 400;
 	
 	protected char[][] board;
 	
@@ -38,42 +45,61 @@ public class Board {
 		ant = b.ant.clone();
 	}
 	public void moveAnt() {
-		Pair<Integer, Integer> pos;
+		Pair<Integer, Integer> pos, newPos;
 		pos = ant.getCurrPos();
-		board[pos.getLeftElement()][pos.getRightElement()] = '0';
+		board[pos.getLeftElement()][pos.getRightElement()] = EMPTY_CELL;
+		
+		newPos = this.calaculateAntNewPosition();
+		ant.setCurrPos(newPos);
+		if(board[newPos.getLeftElement()][newPos.getRightElement()] == FOOD_CELL) {
+			ant.incrementFoodCounter();
+			board[newPos.getLeftElement()][newPos.getRightElement()] = CURR_CELL;
+		}
+		
+		ant.incrementActionCounter();
+	}
+	
+	private Pair<Integer, Integer> calaculateAntNewPosition() {
+		Pair<Integer, Integer> pos, newPos = null;
+		pos = ant.getCurrPos();
 		switch(ant.getCurrDir()) {
 		case NORTH:
 			if(pos.getLeftElement() - 1 < 0)
-				ant.setCurrPos(new Pair<Integer, Integer>(DEFAULT_HEIGHT - 1, pos.getRightElement()));
+				newPos = new Pair<Integer, Integer>(DEFAULT_HEIGHT - 1, pos.getRightElement());
 			else
-				ant.setCurrPos(new Pair<Integer, Integer>(pos.getLeftElement() - 1, pos.getRightElement()));
+				newPos = new Pair<Integer, Integer>(pos.getLeftElement() - 1, pos.getRightElement());
 			break;
 		case EAST:
 			if(pos.getRightElement() + 1 >= DEFAULT_WIDTH)
-				ant.setCurrPos(new Pair<Integer, Integer>(pos.getLeftElement(), 0));
+				newPos = new Pair<Integer, Integer>(pos.getLeftElement(), 0);
 			else
-				ant.setCurrPos(new Pair<Integer, Integer>(pos.getLeftElement(), pos.getRightElement() + 1));
+				newPos = new Pair<Integer, Integer>(pos.getLeftElement(), pos.getRightElement() + 1);
 			break;
 		case SOUTH:
 			if(pos.getLeftElement() + 1 >= DEFAULT_HEIGHT)
-				ant.setCurrPos(new Pair<Integer, Integer>(0, pos.getRightElement()));
+				newPos = new Pair<Integer, Integer>(0, pos.getRightElement());
 			else
-				ant.setCurrPos(new Pair<Integer, Integer>(pos.getLeftElement() + 1, pos.getRightElement()));
+				newPos = new Pair<Integer, Integer>(pos.getLeftElement() + 1, pos.getRightElement());
 			break;
 		case WEST:
 			if(pos.getRightElement() - 1 < 0)
-				ant.setCurrPos(new Pair<Integer, Integer>(pos.getLeftElement(), DEFAULT_WIDTH - 1));
+				newPos = new Pair<Integer, Integer>(pos.getLeftElement(), DEFAULT_WIDTH - 1);
 			else
-				ant.setCurrPos(new Pair<Integer, Integer>(pos.getLeftElement(), pos.getRightElement() - 1));
+				newPos = new Pair<Integer, Integer>(pos.getLeftElement(), pos.getRightElement() - 1);
 			break;		
 		}
-		pos = ant.getCurrPos();
-		if(board[pos.getLeftElement()][pos.getRightElement()] == '#') {
-			ant.incrementFoodCounter();
-			board[pos.getLeftElement()][pos.getRightElement()] = '@';
-		}
+		return newPos;
 	}
 	
+	public boolean areActionUnitsLeft() {
+		return ant.getActionCounter() < maxActionUnits;
+	}
+	
+	public boolean isFoodAhead() {
+		Pair<Integer, Integer> newPos = this.calaculateAntNewPosition();
+		
+		return board[newPos.getLeftElement()][newPos.getRightElement()] == FOOD_CELL;
+	}
 	
 	public Ant getAnt() {
 		return ant;

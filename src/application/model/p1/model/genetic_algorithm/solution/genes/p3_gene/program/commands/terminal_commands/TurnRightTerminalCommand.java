@@ -13,7 +13,8 @@ public class TurnRightTerminalCommand implements Command {
 
 	@Override
 	public void execute(List<ProgramTree> commands, Board board) {
-		board.getAnt().turn(false);
+		if(board.areActionUnitsLeft())
+			board.getAnt().turn(false);
 	}
 
 	
@@ -24,6 +25,6 @@ public class TurnRightTerminalCommand implements Command {
 	
 	@Override
 	public String toString() {
-		return "DERECHA";
+		return "TURN_RIGHT";
 	}
 }

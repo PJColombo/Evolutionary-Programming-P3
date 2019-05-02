@@ -32,8 +32,9 @@ public class TreeGene extends Gene<ProgramTree> {
 		this.isHalf = isHalf;
 		this.initialBoard = initialBoard;
 		finalBoard = initialBoard.clone();
-		this.alleles.add(this.initializeGene(1));
-		this.decodeGene();
+		
+		initializeGene();
+		decodeGene();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -67,34 +68,6 @@ public class TreeGene extends Gene<ProgramTree> {
 		this.decodeGene();
 	}
 	
-	
-	
-	protected ProgramTree initializeGene(int currentDepth){
-		ProgramTree currentProgramTree = null;
-		int cD = currentDepth;
-		
-		if(currentDepth == this.maxDepth)
-			return new ProgramTree(pickCommand(randomSelector(1)), finalBoard);
-		else{
-			Command c;
-			if(isHalf) {
-				if(currentDepth == 1)
-					c = pickCommand(randomSelector(0));
-				else 
-					c = pickCommand(randomSelector(2));
-			}else 
-					c = pickCommand(randomSelector(0));
-			
-			
-			currentProgramTree = new ProgramTree(c, finalBoard);
-			for (int i = 0; i < c.getNumOfChilds(); i++) {
-				ProgramTree child = initializeGene(cD + 1);
-				currentProgramTree.addChildren(child);
-			}
-		}
-		return currentProgramTree;
-	}
-
 	@Override
 	public void decodeGene() {
 		// TODO Auto-generated method stub
@@ -119,10 +92,36 @@ public class TreeGene extends Gene<ProgramTree> {
 
 	@Override
 	protected void initializeGene() {
-		// TODO Auto-generated method stub
-		
+		this.alleles.add(this.recurInitializeGene(1));
 	}
 	
+
+	private ProgramTree recurInitializeGene(int currentDepth){
+		ProgramTree currentProgramTree = null;
+		int cD = currentDepth;
+		
+		if(currentDepth == this.maxDepth)
+			return new ProgramTree(pickCommand(randomSelector(1)), finalBoard);
+		else{
+			Command c;
+			if(isHalf) {
+				if(currentDepth == 1)
+					c = pickCommand(randomSelector(0));
+				else 
+					c = pickCommand(randomSelector(2));
+			}else 
+					c = pickCommand(randomSelector(0));
+			
+			
+			currentProgramTree = new ProgramTree(c, finalBoard);
+			for (int i = 0; i < c.getNumOfChilds(); i++) {
+				ProgramTree child = recurInitializeGene(cD + 1);
+				currentProgramTree.addChildren(child);
+			}
+		}
+		return currentProgramTree;
+	}
+
 	/**
 	 * @param num : eleccion del comando a generar
 	 * @return 3 opciones:
@@ -167,6 +166,10 @@ public class TreeGene extends Gene<ProgramTree> {
 		}
 	}
 	
+	public int executeGeneTree() {
+		alleles.get(0).executeTree();
+		return alleles.get(0).getAntFoodEated();
+	}
 	public String toString() {
 		return this.alleles.get(0).toString();
 	}

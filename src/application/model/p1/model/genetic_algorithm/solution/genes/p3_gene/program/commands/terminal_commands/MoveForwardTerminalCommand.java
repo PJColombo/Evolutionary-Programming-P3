@@ -14,7 +14,8 @@ public class MoveForwardTerminalCommand implements Command {
 
 	@Override
 	public void execute(List<ProgramTree> commands, Board board) {
-		board.moveAnt();
+		if(board.areActionUnitsLeft())
+			board.moveAnt();
 	}
 
 	
@@ -25,6 +26,6 @@ public class MoveForwardTerminalCommand implements Command {
 	
 	@Override
 	public String toString() {
-		return "AVANZA";
+		return "MOVE_FOWARD";
 	}
 }

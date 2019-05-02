@@ -1,4 +1,4 @@
-package application.model.p1.model.genetic_algorithm.solution.chromosomes.p3;
+package application.model.p1.model.genetic_algorithm.solution.chromosomes.p3_chromosome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ public class ProgramChromosome extends Chromosome<TreeGene> {
 			genes.add(new TreeGene(maxHeight, isHalf, board));
 			chromosomeLength += genes.get(i).getSize();
 		}
+		
 		fitness = this.calculateFitness();
 		this.calculateFenotype();
 	}
@@ -42,7 +43,6 @@ public class ProgramChromosome extends Chromosome<TreeGene> {
 		score = pc.getScore();
 		accuScore = pc.getAccuScore();
 		maxHeight = pc.getMaxHeight();
-		
 	}
 	
 	public ProgramChromosome(boolean maximize, List<? extends Gene<?>> genes, int chromosomeLength, int maxHeight) {
@@ -66,8 +66,14 @@ public class ProgramChromosome extends Chromosome<TreeGene> {
 
 	@Override
 	protected double calculateFitness() {
-		// TODO Auto-generated method stub
-		return 0;
+		int fitness = 0;
+		for (TreeGene tg : genes) 
+			fitness += tg.executeGeneTree();
+		System.out.println("ant last pos: " + genes.get(0).getFinalBoard().getAnt().getCurrPos().getLeftElement() + ", "
+				+ genes.get(0).getFinalBoard().getAnt().getCurrPos().getRightElement());
+		System.out.println("ant action counter: " + genes.get(0).getFinalBoard().getAnt().getActionCounter());
+		System.out.println("Fitness: " + fitness);
+		return fitness;
 	}
 
 	@Override

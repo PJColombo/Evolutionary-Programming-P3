@@ -11,7 +11,8 @@ public class TurnLeftTerminalCommand implements Command {
 	private int numChild = 0;
 	@Override
 	public void execute(List<ProgramTree> commands, Board board) {
-		board.getAnt().turn(true);
+		if(board.areActionUnitsLeft())
+			board.getAnt().turn(true);
 	}
 	@Override
 	public int getNumOfChilds() {
@@ -20,6 +21,6 @@ public class TurnLeftTerminalCommand implements Command {
 	
 	@Override
 	public String toString() {
-		return "IZQUIERDA";
+		return "TURN_LEFT";
 	}
 }
