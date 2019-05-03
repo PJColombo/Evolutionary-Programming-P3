@@ -10,20 +10,17 @@ public class ProgramTree {
 	private Command root;
 	private ArrayList<ProgramTree> children;
 	private int height;
-	private Board board;
 	
 	public ProgramTree() {}
 	
-	public ProgramTree(Command root, Board board) {
+	public ProgramTree(Command root) {
 		this.root = root;
-		this.board = board;
 		children = new ArrayList<ProgramTree>();
 		height = 1;
 	}
 	
 	public ProgramTree(ProgramTree pt) {
 		root = pt.root;
-		board = pt.board;
 		children = new ArrayList<ProgramTree>(pt.children.size());
 		for (ProgramTree programTree : pt.children) {
 			children.add(programTree.clone());
@@ -38,7 +35,7 @@ public class ProgramTree {
 	public boolean hasChildren() {
 		return children.size() > 0;
 	}
-	public void executeTree() {
+	public void executeTree(Board board) {
 		while(board.areActionUnitsLeft())
 			root.execute(children, board);
 	}
@@ -61,9 +58,6 @@ public class ProgramTree {
 		return children;
 	}
 	
-	public int getAntFoodEated() {
-		return board.getAnt().getFoodCounter();
-	}
 	
 	public ProgramTree clone() {
 		return new ProgramTree(this);

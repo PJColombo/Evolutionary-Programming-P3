@@ -102,7 +102,7 @@ public class TreeGene extends Gene<ProgramTree> {
 		int cD = currentDepth;
 		
 		if(currentDepth == this.maxDepth)
-			return new ProgramTree(pickCommand(randomSelector(1)), finalBoard);
+			return new ProgramTree(pickCommand(randomSelector(1)));
 		else{
 			Command c;
 			if(isHalf) {
@@ -114,7 +114,7 @@ public class TreeGene extends Gene<ProgramTree> {
 					c = pickCommand(randomSelector(0));
 			
 			
-			currentProgramTree = new ProgramTree(c, finalBoard);
+			currentProgramTree = new ProgramTree(c);
 			for (int i = 0; i < c.getNumOfChilds(); i++) {
 				ProgramTree child = recurInitializeGene(cD + 1);
 				currentProgramTree.addChildren(child);
@@ -174,8 +174,8 @@ public class TreeGene extends Gene<ProgramTree> {
 	/**
 	 * 
 	 * @param node: El nodo que estamos recorriendo
-	 * @param flag: Para determinar si es una mutación de terminal (0) o de function (1)
-	 * @return un boolean para saber si se ha producido ya la mutación
+	 * @param flag: Para determinar si es una mutaciï¿½n de terminal (0) o de function (1)
+	 * @return un boolean para saber si se ha producido ya la mutaciï¿½n
 	 */
 	private boolean exeMutation(ProgramTree node, int flag) {
 		boolean isMutated = false;
@@ -200,9 +200,14 @@ public class TreeGene extends Gene<ProgramTree> {
 	}
 	
 	public int executeGeneTree() {
-		alleles.get(0).executeTree();
-		return alleles.get(0).getAntFoodEated();
+		alleles.get(0).executeTree(finalBoard);
+		return getAntFoodEated();
 	}
+	
+	private int getAntFoodEated() {
+		return finalBoard.getAnt().getFoodCounter();
+	}
+	
 	public String toString() {
 		return this.alleles.get(0).toString();
 	}

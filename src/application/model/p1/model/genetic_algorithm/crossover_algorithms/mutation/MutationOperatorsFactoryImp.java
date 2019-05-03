@@ -3,13 +3,13 @@ package application.model.p1.model.genetic_algorithm.crossover_algorithms.mutati
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.ConventionalMutation;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.InversionMutation;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.SwapMutation;
-import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.evolutive_ants.FunctionalMutation;
-import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.evolutive_ants.TerminalMutation;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.evolutive_tsp.ExchangeMutation;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.evolutive_tsp.HeuristicMutation;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.evolutive_tsp.InsertionMutation;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.evolutive_tsp.ReversalMutation;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.evolutive_tsp.TSPSwapMutation;
+import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.p3_operators.FunctionalMutation;
+import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.p3_operators.TerminalMutation;
 
 public class MutationOperatorsFactoryImp extends MutationOperatorsFactory {
 	

@@ -1,4 +1,4 @@
-package application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.evolutive_ants;
+package application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.p3_operators;
 
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.MutationOperator;
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.Chromosome;
