@@ -213,9 +213,9 @@ public class GeneticAlgorithm {
 	private void reproduce() {
 		Pair<? extends Chromosome<? extends Gene<?>>, ? extends Chromosome<? extends Gene<?>>> childChromosomes = new Pair<>();
 		List<Integer> selectedCrossoverIndexSol = new ArrayList<>();
-//		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm(this.crossoverOperator, this.crossoverProbability, this.crosspointsNum, 25);
+		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm(this.crossoverOperator, this.crossoverProbability, this.crosspointsNum, 25);
 	
-		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm("treeswap", 0.7, 0, 25);
+//		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm("treeswap", 0.7, 0, 25);
 
 		double prop; 
 		//Get selected solutions.

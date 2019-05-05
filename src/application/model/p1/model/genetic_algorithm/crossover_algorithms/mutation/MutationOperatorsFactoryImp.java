@@ -10,6 +10,7 @@ import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutatio
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.evolutive_tsp.TSPSwapMutation;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.p3_operators.FunctionalMutation;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.p3_operators.TerminalMutation;
+import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.p3_operators.TreeMutation;
 
 public class MutationOperatorsFactoryImp extends MutationOperatorsFactory {
 	
@@ -37,6 +38,8 @@ public class MutationOperatorsFactoryImp extends MutationOperatorsFactory {
 				return new TerminalMutation(mutationProbability);
 			case "functional":
 				return new FunctionalMutation(mutationProbability);
+			case "tree": 
+				return new TreeMutation(mutationProbability);
 			default:
 				return new ConventionalMutation(mutationProbability);
 		}

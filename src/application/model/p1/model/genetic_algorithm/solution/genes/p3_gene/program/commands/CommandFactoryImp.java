@@ -20,12 +20,20 @@ public class CommandFactoryImp extends CommandFactory {
 		return null;
 	}
 
+	/**
+	 * It creates a random command.
+	 * type: it specifies which type of command we want, that is:
+	 * 	0: function command
+	 * 	1: terminal command
+	 * 	2: random command of any type
+	 * 	3. two params random command.
+	 */
 	@Override
 	public Command createRandomCommand(int type) {
 
 		switch(type) {
 			case 0:
-				return getTerminalCommand(ThreadLocalRandom.current().nextInt(TERMINAL_SIZE));
+				return getFunctionCommand(ThreadLocalRandom.current().nextInt(TERMINAL_SIZE));
 			case 1:
 				return getTerminalCommand(ThreadLocalRandom.current().nextInt(FUNCTION_SIZE));
 			case 2:
@@ -34,6 +42,9 @@ public class CommandFactoryImp extends CommandFactory {
 					return getTerminalCommand(ThreadLocalRandom.current().nextInt(TERMINAL_SIZE));
 				else
 					return getFunctionCommand(ThreadLocalRandom.current().nextInt(FUNCTION_SIZE));
+			case 3:
+				return getFunctionCommand(ThreadLocalRandom.current().nextInt(2));
+						
 			default:
 				return createRandomCommand(2);
 		}

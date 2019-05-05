@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.ProgramTree;
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.commands.Command;
+import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.commands.CommandFactory;
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.commands.function_commands.IfFoodFunctionCommand;
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.commands.function_commands.Progn2FunctionCommand;
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.commands.function_commands.Progn3FunctionCommand;
@@ -23,7 +24,6 @@ public class TreeGene extends Gene<ProgramTree> {
 	private Board initialBoard;
 	/*board which contains ant path.*/
 	private Board finalBoard;
-	private int numOfTerminals;
 	
 	public TreeGene(Integer maxDepth, boolean isHalf, Board initialBoard) {
 		super();
@@ -33,7 +33,6 @@ public class TreeGene extends Gene<ProgramTree> {
 		this.isHalf = isHalf;
 		this.initialBoard = initialBoard;
 		finalBoard = initialBoard.clone();
-		this.numOfTerminals = 0;
 		initializeGene();
 		decodeGene();
 	}
@@ -93,83 +92,83 @@ public class TreeGene extends Gene<ProgramTree> {
 
 	@Override
 	protected void initializeGene() {
-		this.alleles.add(this.recurInitializeGene(1));
+		this.alleles.add(ProgramTree.initializeTree(1, maxDepth, isHalf));
 	}
 	
 
-	private ProgramTree recurInitializeGene(int currentDepth){
-		ProgramTree currentProgramTree = null;
-		int cD = currentDepth;
-		
-		if(currentDepth == this.maxDepth)
-			return new ProgramTree(pickCommand(randomSelector(1)));
-		else{
-			Command c;
-			if(isHalf) {
-				if(currentDepth == 1)
-					c = pickCommand(randomSelector(0));
-				else 
-					c = pickCommand(randomSelector(2));
-			}else 
-					c = pickCommand(randomSelector(0));
-			
-			
-			currentProgramTree = new ProgramTree(c);
-			for (int i = 0; i < c.getNumOfChilds(); i++) {
-				ProgramTree child = recurInitializeGene(cD + 1);
-				currentProgramTree.addChildren(child);
-			}
-		}
-		return currentProgramTree;
-	}
+//	private ProgramTree recurInitializeGene(int currentDepth){
+//		ProgramTree currentProgramTree = null;
+//		int cD = currentDepth;
+//		
+//		if(currentDepth == this.maxDepth)
+//			return new ProgramTree(pickCommand(randomSelector(1)));
+//		else{
+//			Command c;
+//			if(isHalf) {
+//				if(currentDepth == 1)
+//					c = pickCommand(randomSelector(0));
+//				else 
+//					c = pickCommand(randomSelector(2));
+//			}else 
+//					c = pickCommand(randomSelector(0));
+//			
+//			
+//			currentProgramTree = new ProgramTree(c);
+//			for (int i = 0; i < c.getNumOfChilds(); i++) {
+//				ProgramTree child = recurInitializeGene(cD + 1);
+//				currentProgramTree.addChildren(child);
+//			}
+//		}
+//		return currentProgramTree;
+//	}
 
-	/**
-	 * @param num : eleccion del comando a generar
-	 * @return 3 opciones:
-	 *  - Una funcion
-	 *  - Un terminal
-	 *  - Aleatorio
-	 *  - Una funcion de 2 hijos
-	 */
-	private int randomSelector(int num) {
-		int elem;
-		switch (num) {
-		case 0:
-			elem = ThreadLocalRandom.current().nextInt(0, 3);
-			break;
-		case 1:
-			elem = ThreadLocalRandom.current().nextInt(3, 6);
-			break;
-		case 2:
-			elem = ThreadLocalRandom.current().nextInt(0, 6);
-			break;
-		case 3:
-			elem = ThreadLocalRandom.current().nextInt(0, 2);
-			break;
-		default:
-			elem = ThreadLocalRandom.current().nextInt(0, 6);
-		}
-		return elem;
-	}
+//	/**
+//	 * @param num : eleccion del comando a generar
+//	 * @return 3 opciones:
+//	 *  - Una funcion
+//	 *  - Un terminal
+//	 *  - Aleatorio
+//	 *  - Una funcion de 2 hijos
+//	 */
+//	private int randomSelector(int num) {
+//		int elem;
+//		switch (num) {
+//		case 0:
+//			elem = ThreadLocalRandom.current().nextInt(0, 3);
+//			break;
+//		case 1:
+//			elem = ThreadLocalRandom.current().nextInt(3, 6);
+//			break;
+//		case 2:
+//			elem = ThreadLocalRandom.current().nextInt(0, 6);
+//			break;
+//		case 3:
+//			elem = ThreadLocalRandom.current().nextInt(0, 2);
+//			break;
+//		default:
+//			elem = ThreadLocalRandom.current().nextInt(0, 6);
+//		}
+//		return elem;
+//	}
 	
-	private Command pickCommand(int elem) {	
-		switch(elem) {
-		case 0: 
-			return new IfFoodFunctionCommand();
-		case 1: 
-			return new Progn2FunctionCommand();
-		case 2: 
-			return new Progn3FunctionCommand();
-		case 3: 
-			return new MoveForwardTerminalCommand();
-		case 4: 
-			return new TurnLeftTerminalCommand();
-		case 5: 
-			return new TurnRightTerminalCommand();
-		default:
-			return new MoveForwardTerminalCommand();
-		}
-	}
+//	private Command pickCommand(int elem) {	
+//		switch(elem) {
+//		case 0: 
+//			return new IfFoodFunctionCommand();
+//		case 1: 
+//			return new Progn2FunctionCommand();
+//		case 2: 
+//			return new Progn3FunctionCommand();
+//		case 3: 
+//			return new MoveForwardTerminalCommand();
+//		case 4: 
+//			return new TurnLeftTerminalCommand();
+//		case 5: 
+//			return new TurnRightTerminalCommand();
+//		default:
+//			return new MoveForwardTerminalCommand();
+//		}
+//	}
 	
 	/**
 	 * 
@@ -179,15 +178,16 @@ public class TreeGene extends Gene<ProgramTree> {
 	 */
 	private boolean exeMutation(ProgramTree node, int flag) {
 		boolean isMutated = false;
+		CommandFactory cf = CommandFactory.getInstance();
 		if((flag == 0) ? node.isTerminal() : node.isFunction()) {
 			double prob = ThreadLocalRandom.current().nextDouble();
 			if (prob < 0.5) {
 				return false; 
 			}else if(node.getRoot().getNumOfChilds() == 2 && flag == 1){
-				node.setRoot(pickCommand(randomSelector(3)));
+				node.setRoot(cf.createRandomCommand(3));
 				return true;
 			}else if(flag == 0){
-				node.setRoot(pickCommand(randomSelector(1)));
+				node.setRoot(cf.createRandomCommand(1));
 				return true;
 			}else return false;
 		}
@@ -208,13 +208,19 @@ public class TreeGene extends Gene<ProgramTree> {
 		return finalBoard.getAnt().getFoodCounter();
 	}
 	
+	@Override
 	public String toString() {
-		return this.alleles.get(0).toString();
+		return "Height: " + alleles.get(0).getHeight() + System.lineSeparator() + this.alleles.get(0).toString();
 	}
 
 	public Board getFinalBoard() {
 		return finalBoard;
 	}
+
+	public boolean isHalf() {
+		return isHalf;
+	}
+	
 	
 	
 }

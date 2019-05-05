@@ -3,7 +3,7 @@ package application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.prog
 public abstract class CommandFactory {
 	private static CommandFactory cf;
 
-	public synchronized CommandFactory getInstance() {
+	public static synchronized CommandFactory getInstance() {
 		if(cf == null)
 			cf = new CommandFactoryImp();
 		return cf;

@@ -96,7 +96,9 @@ public class ProgramChromosome extends Chromosome<TreeGene> {
 	
 	@Override
 	public String toString() {
-		return genes.get(0).toString();
+		String c = "Fitness: " + fitness + " | NFitness: " + normalizedFitness + " | Score: " + score + " | AScore: " + accuScore
+				+ System.lineSeparator();
+		return c + genes.get(0).toString();
 	}
 	
 	public Board getFinalBoard() {

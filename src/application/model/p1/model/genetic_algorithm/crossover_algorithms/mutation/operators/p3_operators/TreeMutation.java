@@ -1,14 +1,13 @@
 package application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.operators.p3_operators;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.MutationOperator;
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.Chromosome;
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
+import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.TreeGene;
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.ProgramTree;
-import application.model.p1_utils.Pair;
 
 public class TreeMutation extends MutationOperator {
 
@@ -16,7 +15,6 @@ public class TreeMutation extends MutationOperator {
 	
 	public TreeMutation(double mutationProbability) {
 		super(mutationProbability);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -28,15 +26,17 @@ public class TreeMutation extends MutationOperator {
 			p = ThreadLocalRandom.current().nextDouble();
 			if(p < mutationProbability) {
 				alleles = genes.get(i).getAlleles();
-				for(int j = 0; j < alleles.size(); i++)
-					mutateRandomTree((ProgramTree) alleles.get(j));
+				for(int j = 0; j < alleles.size(); j++) {
+					ProgramTree pt = (ProgramTree) alleles.get(j);
+					while(!mutateRandomTree(pt, pt.getHeight(), ((TreeGene) genes.get(i)).isHalf()));
+				}
 			}			
 		}
 		return c1;
 	}
 
-	private boolean mutateRandomTree(ProgramTree currTree) {
-		int i = 0;
+	private boolean mutateRandomTree(ProgramTree currTree, int maxHeight, boolean isHalf) {
+		int i = 0, newTreeHeight;
 		double p;
 		boolean nodeSelected = false;
 		while(!nodeSelected && i < currTree.getChildren().size()) {
@@ -44,23 +44,15 @@ public class TreeMutation extends MutationOperator {
 			
 			if(p < TREE_MUTATION_PROBABILITY) {
 				nodeSelected = true;
-				currTree.getChildren().set(i, generateRandomTree(currTree.getHeight()));
+				newTreeHeight = ThreadLocalRandom.current().nextInt(1, maxHeight + 1);
+				currTree.replaceChildren(i, ProgramTree.initializeTree(1, newTreeHeight, isHalf));
 			}
+			else
+				nodeSelected = mutateRandomTree(currTree.getChildren().get(i), maxHeight, isHalf);
 
 			i++;
 		}
 		
 		return nodeSelected;
 	}
-	
-	private ProgramTree generateRandomTree(int maxHeight) {
-		ProgramTree randomTree = null;
-		int height = ThreadLocalRandom.current().nextInt(maxHeight + 1);
-		
-		//TODO need to call ramped and half initialization tree technique
-		
-		return randomTree;
-	}
-	
-	
 }
