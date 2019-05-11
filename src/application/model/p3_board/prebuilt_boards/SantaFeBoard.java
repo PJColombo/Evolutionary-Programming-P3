@@ -42,5 +42,4 @@ public class SantaFeBoard extends Board  {
 		
 		ant.incrementFoodCounter();
 	}
-
 }

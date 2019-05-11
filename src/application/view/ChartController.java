@@ -15,6 +15,8 @@ import application.Main;
 import application.model.p1.model.genetic_algorithm.GeneticAlgorithm;
 import application.model.p1_utils.RoundDecimal;
 import application.model.p1_utils.Stat;
+import application.model.p3_board.Board;
+import application.model.p3_board.prebuilt_boards.SantaFeBoard;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -37,6 +39,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class ChartController implements Initializable{
@@ -103,6 +107,10 @@ public class ChartController implements Initializable{
     private Integer nVariables;
     private Integer nCrosspoints;
     
+    //P3 
+    
+    @FXML
+    private GridPane board;
     
     private static final String[] RGB_COLORS = {"rgba(51, 102, 255, 1.0)", "rgba(255, 26, 26, 1.0)", "rgba(41, 163, 41, 1.0)", "rgb(204, 0, 255)", 
     		"rgb(0, 51, 0)", "rgb(102, 153, 153)", "rgb(153, 255, 51)", "rgb(153, 0, 153)", "rgb(102, 0, 102)", "rgb(153, 102, 51)",
@@ -115,12 +123,14 @@ public class ChartController implements Initializable{
     
     
     //private final ObservableList<String> listFunctions = FXCollections.observableArrayList("Function1", "Function2", "Function3", "BinaryFunction4" , "RealFunction4", "TSP");
-    private final ObservableList<String> listFunctions = FXCollections.observableArrayList("TSP");
+    private final ObservableList<String> listFunctions = FXCollections.observableArrayList("ANT");
     //private final ObservableList<String> listCrossAlgorithms = FXCollections.observableArrayList("Multipoint", "Uniform", "Onepoint", "cycle", "erx", "pmx", "ocx", "prox", "poox");
-    private final ObservableList<String> listCrossAlgorithms = FXCollections.observableArrayList("Cycle", "ERX", "PMX", "OCX", "PROX", "POOX", "Diagonal");
+    //private final ObservableList<String> listCrossAlgorithms = FXCollections.observableArrayList("Cycle", "ERX", "PMX", "OCX", "PROX", "POOX", "Diagonal");
+    private final ObservableList<String> listCrossAlgorithms = FXCollections.observableArrayList("TreeSwap");
     private final ObservableList<String> listSelAlgorithms = FXCollections.observableArrayList("Roulette", "Tournament", "Probabilistic_tournament", "Stochastic", "Truncation", "Ranking", "Rest");
     //private final ObservableList<String> listMutationAlgorithms = FXCollections.observableArrayList("Conventional", "Inversion", "Swap", "reversal", "tsp_swap", "ins_swap", "hrt_swap", "exc_swap");
-    private final ObservableList<String> listMutationAlgorithms = FXCollections.observableArrayList("Reversal", "TSP_Swap", "Ins_Swap", "Hrt_Swap", "Exc_Swap");
+    //private final ObservableList<String> listMutationAlgorithms = FXCollections.observableArrayList("Reversal", "TSP_Swap", "Ins_Swap", "Hrt_Swap", "Exc_Swap");
+    private final ObservableList<String> listMutationAlgorithms = FXCollections.observableArrayList("Terminal", "Functional", "Tree");
     
   
     
@@ -136,7 +146,7 @@ public class ChartController implements Initializable{
         this.errorMsg.setText("Welcome!");
         
         crossAlgorithm.setItems(listCrossAlgorithms);
-        crossAlgorithm.getSelectionModel().select(2);
+        crossAlgorithm.getSelectionModel().select(0);
         
         selAlgorithm.setItems(listSelAlgorithms);
         selAlgorithm.getSelectionModel().select(0);
@@ -149,6 +159,10 @@ public class ChartController implements Initializable{
         
         chart.getStyleClass().add("thick-chart");
         chart.setCreateSymbols(false);
+        
+        SantaFeBoard STFboard = new SantaFeBoard();
+        printBoard(STFboard);
+        
         
         mutPerSlid.valueProperty().addListener((obs, oldValue, newValue) -> {
         	NumberFormat nf = NumberFormat.getNumberInstance(Locale.ENGLISH);
@@ -193,7 +207,8 @@ public class ChartController implements Initializable{
     }
 
 
-    @FXML
+    @SuppressWarnings("unchecked")
+	@FXML
     public void run(ActionEvent e){
     	List<Stat> stats = null;
     	ArrayList<XYChart.Series<String, Number>> series = new ArrayList<>();
@@ -202,10 +217,8 @@ public class ChartController implements Initializable{
     	
     	if(isInputValid()) {  
     		chart.getData().clear();
-    		
     		chart.getXAxis().setLabel("Generations");
             chart.getYAxis().setLabel("Fitness");
-            
             
     			elitism = arg[5] == 1.0;
     			ge = new GeneticAlgorithm(nVariables, function.getValue(), arg[0].intValue(), arg[1].intValue(), selAlgorithm.getValue(), 
@@ -213,8 +226,11 @@ public class ChartController implements Initializable{
         		ge.setCrosspointsNum(this.nCrosspoints);
         		
         		stats = this.ge.execute();
-       	
-                XYChart.Series<String,Number> absolutBest_series = new XYChart.Series<String,Number>();
+        		
+        		printBoard(stats.get(0).getBestBoard());
+        		
+        		
+        		XYChart.Series<String,Number> absolutBest_series = new XYChart.Series<String,Number>();
                 XYChart.Series<String,Number> generationBest_series = new XYChart.Series<String,Number>();
                 XYChart.Series<String,Number> avgGeneration_series = new XYChart.Series<String,Number>();
                 absolutBest_series.setName("Best of all");
@@ -222,7 +238,7 @@ public class ChartController implements Initializable{
                 avgGeneration_series.setName("Generation average");
                 
                 chart.getData().addAll(absolutBest_series, generationBest_series, avgGeneration_series);
-                
+       	
                 int generation = 0;
                 for (Stat s : stats) {
                 	
@@ -232,16 +248,15 @@ public class ChartController implements Initializable{
                     generation++;
     			}
                 
-
     	        this.errorMsg.appendText(System.lineSeparator() + "RESULTS " + System.lineSeparator() + "________________________________"
                 		+ System.lineSeparator() + stats.get(stats.size() - 1));
                 this.errorMsg.appendText("Best Individual " + System.lineSeparator() + "_______________________-"
                 		+ System.lineSeparator() + ge.getBestSolution());
                 
+                
                 series.add(absolutBest_series);
                 series.add(generationBest_series);
                 series.add(avgGeneration_series);
-    		
     		
     		if(validParameters) {    			
     			this.setSeriesStyle(series);
@@ -258,49 +273,6 @@ public class ChartController implements Initializable{
     		}
     	}
     	
-    	
-        
-//        if(isInputValid()){      
-//    		this.ge = new GeneticAlgorithm(nVariables, function.getValue(), arg[0].intValue(), arg[1].intValue(), selAlgorithm.getValue(), 
-//    				crossAlgorithm.getValue(), arg[2], mutationAlgorithm.getValue(), arg[3], arg[4], elitism);
-//    	
-//    		this.ge.setCrosspointsNum(this.nCrosspoints);
-//    		stats = this.ge.execute();
-//    	
-//            //Generate the chart
-//            chart.getData().clear();
-//            XYChart.Series<String,Number> absolutBest_series = new XYChart.Series<String,Number>();
-//            XYChart.Series<String,Number> generationBest_series = new XYChart.Series<String,Number>();
-//            XYChart.Series<String,Number> avgGeneration_series = new XYChart.Series<String,Number>();
-//            absolutBest_series.setName("Best of all");
-//            generationBest_series.setName("Generation best");
-//            avgGeneration_series.setName("Generation average");
-//            chart.getData().addAll(absolutBest_series, generationBest_series, avgGeneration_series);
-//            int generation = 0;
-//            for (Stat s : stats) {
-//            	
-//            	absolutBest_series.getData().add(new Data<String, Number>(Integer.toString(generation), s.getBestIndividualFitness()));
-//            	generationBest_series.getData().add(new Data<String, Number>(Integer.toString(generation),s.getBestGenerationIndividualFitness()));
-//                avgGeneration_series.getData().add(new Data<String, Number>(Integer.toString(generation), s.getAveragePopulationFitness()));
-//                generation++;
-//			}
-//            
-//            chart.getXAxis().setLabel("Generations");
-//            chart.getYAxis().setLabel("Fitness");
-//            
-//
-//	        this.errorMsg.appendText(System.lineSeparator() + "RESULTS " + System.lineSeparator() + "________________________________"
-//            		+ System.lineSeparator() + stats.get(stats.size() - 1));
-//            this.errorMsg.appendText("Best Individual " + System.lineSeparator() + "_______________________-"
-//            		+ System.lineSeparator() + ge.getBestSolution());
-//            
-//            series.add(absolutBest_series);
-//            series.add(generationBest_series);
-//            series.add(avgGeneration_series);
-//           
-//            
-//        }
-//        this.ge = null;
     }
     
     private void setSeriesStyle(ArrayList<XYChart.Series<String,Number>> series) {
@@ -387,7 +359,6 @@ public class ChartController implements Initializable{
 
     @FXML
     public void clear(ActionEvent e){
-    	chart.getData().clear();
         this.mutPorcentage.setText("0.05");
         this.errorMsg.clear();
         this.errorValue.setText("0.001");
@@ -405,30 +376,29 @@ public class ChartController implements Initializable{
        
     }   
     
-    private XYChart.Series<String,Number> createSeries(String seriesName, String dataType, List<Stat> stats) {
-    	XYChart.Series<String,Number> s = new XYChart.Series<>();
-    	int generation = 0; 
-    	double data;
-    	s.setName(seriesName);
-    	for (Stat st : stats) {			
-    		switch(dataType.toLowerCase()) {
-    		case "general best individual":
-    			data = st.getBestIndividualFitness();
-    			break;
-    		case "generation best individual":
-    			data = st.getBestGenerationIndividualFitness();
-    			break;
-    		case "average generation fitness":
-    			data = st.getAveragePopulationFitness();
-    			break;
-    		default:
-    			data = st.getBestIndividualFitness();
-    			break;
-    		}
-    		s.getData().add(new Data<String, Number>(Integer.toString(generation), data));
-    		generation++;
+    private void printBoard(Board board) {
+    	char[][] b = board.getBoard();
+        for (int i = 0; i < 32; i++) {
+			for (int j = 0; j < 32; j++) {
+				StackPane cell = new StackPane();
+				switch (b[i][j]) {
+				//Food
+				case '#':
+					cell.setStyle("-fx-background-color: gold;");
+					break;
+				//Empty
+				case '0':
+					cell.setStyle("-fx-background-color: lightsteelblue;");
+					break;
+				//CURRENT
+				case '@':
+					cell.setStyle("-fx-background-color: lightpink;");
+					break;
+				}
+				this.board.add(cell, j, i);
+			}
 		}
-    	return s;
+        this.board.getStyleClass().add("-fx-stroke-borders: black;");
     }
     public void setMainApp(Main main) {}
 }

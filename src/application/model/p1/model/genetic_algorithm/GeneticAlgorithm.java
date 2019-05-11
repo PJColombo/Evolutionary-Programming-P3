@@ -197,6 +197,7 @@ public class GeneticAlgorithm {
 			this.bestSolution = this.population.get(bestPos).clone();
 		
 		stat.setBestIndividualFitness(this.bestSolution.getFitness());
+		stat.setBestBoard(((ProgramChromosome) this.bestSolution).getFinalBoard());
 		
 		return stat; 
 	}

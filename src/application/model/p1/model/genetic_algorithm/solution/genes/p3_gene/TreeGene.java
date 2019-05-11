@@ -64,7 +64,7 @@ public class TreeGene extends Gene<ProgramTree> {
 		maxDepth = t.maxDepth;
 		isHalf = t.isHalf;
 		initialBoard = t.initialBoard;
-		finalBoard = initialBoard.clone();
+		finalBoard = t.finalBoard.clone();
 		this.decodeGene();
 	}
 	

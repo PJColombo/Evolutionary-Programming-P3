@@ -19,3 +19,7 @@
 .chart-legend-item-symbol{
    -fx-background-radius: 0;
 }
+
+.mygridStyle Line{
+	-fx-stroke: black;
+}

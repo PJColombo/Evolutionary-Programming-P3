@@ -118,5 +118,9 @@ public class Board {
 	public Board clone() {
 		return new Board(this);
 	}
+
+	public char[][] getBoard() {
+		return this.board;
+	}
 	
 }

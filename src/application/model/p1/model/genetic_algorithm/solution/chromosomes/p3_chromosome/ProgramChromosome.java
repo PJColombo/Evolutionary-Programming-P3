@@ -69,10 +69,10 @@ public class ProgramChromosome extends Chromosome<TreeGene> {
 		int fitness = 0;
 		for (TreeGene tg : genes) 
 			fitness += tg.executeGeneTree();
-		System.out.println("ant last pos: " + genes.get(0).getFinalBoard().getAnt().getCurrPos().getLeftElement() + ", "
+		/*System.out.println("ant last pos: " + genes.get(0).getFinalBoard().getAnt().getCurrPos().getLeftElement() + ", "
 				+ genes.get(0).getFinalBoard().getAnt().getCurrPos().getRightElement());
 		System.out.println("ant action counter: " + genes.get(0).getFinalBoard().getAnt().getActionCounter());
-		System.out.println("Fitness: " + fitness);
+		System.out.println("Fitness: " + fitness);*/
 		return fitness;
 	}
 
