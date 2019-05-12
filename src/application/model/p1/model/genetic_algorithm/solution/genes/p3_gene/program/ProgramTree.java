@@ -125,13 +125,14 @@ public class ProgramTree {
 		CommandFactory cf = CommandFactory.getInstance();
 		
 		if(currentDepth == maxDepth)
+			//Terminal command
 			return new ProgramTree(cf.createRandomCommand(1));
 		else{
 			Command c;
 			if(isHalf) {
 				
 				if(currentDepth == 1)
-					//Terminal command
+					//Function command
 					c = cf.createRandomCommand(0);
 				else 
 					//Random type command

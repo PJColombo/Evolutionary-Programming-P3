@@ -149,17 +149,50 @@ public class GeneticAlgorithm {
 		this.printPopulation();
 		return stats;
 	}
-	private void createInitialPopulation() {
-		int currentDepth = 1;
-		int mod = 200 / (this.maxDepth - 1);
-		int mod2 = (mod)/ 2;
+	private void createInitialPopulation1() {
+		popSize = 279;
+		int currentDepth = 2, 
+				mod = popSize / (this.maxDepth - 1), 
+				mod2 = (mod)/ 2;
 		boolean isFull = false;
-		for (int i = 0; i < this.popSize; i++) {
-			if( i % mod == 0) 
+		int currGroup = mod, currInitMethod = mod2;
+		for (int i = 1; i <= this.popSize; i++) {
+			if(i == 200)
+				System.out.println("aqui");
+			if(i < popSize && i % mod == 0) {
 				currentDepth = currentDepth + 1;
-			if( i % mod2 == 0) isFull = !isFull; 
+				currGroup += mod;
+			}
+			if(i < popSize && i % mod2 == 0) {
+				isFull = !isFull;
+				currInitMethod += mod2;
+			} 
+			
 			//TODO change hardcoded santa fe board for generic board and harcoded ant chromosome ?
 			this.population.add(ChromosomeFactory.getInstance().createAntChromosome("ant", true, currentDepth, isFull, new SantaFeBoard()));
+		}
+	}
+	
+	private void createInitialPopulation() {
+		boolean isFull = true;
+		int currentDepth = 2;
+		int groupSize = popSize / (maxDepth - 1), remainingIndividuals = popSize % (maxDepth - 1);
+		List<Integer> groupSizes = new ArrayList<Integer>(maxDepth - 1);
+		for(int i = 0; i < maxDepth - 1; i++) {
+			if(i < remainingIndividuals)
+				groupSizes.add(groupSize + 1);
+			else
+				groupSizes.add(groupSize);
+		}
+		for(int i = 0; i < groupSizes.size(); i++) {
+			for(int j = 0; j < groupSizes.get(i); j++) {
+				if(j == groupSizes.get(i) / 2 + groupSizes.get(i) % 2)
+					isFull = !isFull;
+				this.population.add(ChromosomeFactory.getInstance().
+						createAntChromosome("ant", true, currentDepth, isFull, 
+								new SantaFeBoard()));
+			}
+			currentDepth++;	
 		}
 	}
 	

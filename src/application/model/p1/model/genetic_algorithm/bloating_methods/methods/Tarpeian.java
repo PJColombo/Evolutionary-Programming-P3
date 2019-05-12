@@ -18,7 +18,6 @@ public class Tarpeian implements BloatingMethod {
 	public Tarpeian(List<Chromosome<? extends Gene<?>>> population) {
 		List<ProgramChromosome> p = new ArrayList<ProgramChromosome>(population.size());
 		List<Double> popSizes = new ArrayList<Double>(population.size());
-		p.add((ProgramChromosome) population.get(0));
 		for (Chromosome<? extends Gene<?>> c : population)
 			p.add((ProgramChromosome) c);
 		for (ProgramChromosome pc : p) 
