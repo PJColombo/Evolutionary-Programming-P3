@@ -164,7 +164,7 @@ public class ProgramTree {
 	}
 	
 	public String toString() {
-		return  "Height: " + height + System.lineSeparator() + "NumTrees: " + numTrees + System.lineSeparator() + recurToString(1);
+		return  " | Height: " + height + /*System.lineSeparator() +*/ " | NumTrees: " + numTrees + System.lineSeparator() + recurToString(1);
 	}
 	
 	private String recurToString(int nTab) {

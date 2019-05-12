@@ -121,7 +121,6 @@ public class GeneticAlgorithm {
 		List<Chromosome<? extends Gene<?>>> elite = new ArrayList<>(eliteSize);
 
 		this.createInitialPopulation();
-				
 		this.treatBLoating();
 		stats.add(this.evaluatePopulation());
 		this.printPopulation();
@@ -132,8 +131,14 @@ public class GeneticAlgorithm {
 				this.extractElite(elite);
 			
 			this.select();
+			System.out.println("SELECTION");
+			this.printPopulation();
 			this.reproduce();
+			System.out.println("REPRODUCTION");
+			this.printPopulation();
 			this.mutate();
+			System.out.println("MUTATION");
+			this.printPopulation();
 			
 			if(this.elitism)
 				this.includeElite(elite);
@@ -253,7 +258,6 @@ public class GeneticAlgorithm {
 	@SuppressWarnings("unchecked")
 	private void select() {
 		SelectionAlgorithmFactory algFactory = SelectionAlgorithmFactory.getInstance();
-		//TODO Add additional selection algorithm field to UI (Rest Selection).
 		SelectionAlgorithm alg = algFactory.getSelectionAlgorithm(this.selectionAlgorithm, 0, null, this.restSelectionAlgorithm, this.population.get(0).isMaximize());
 		this.population = (List<Chromosome<? extends Gene<?>>>) alg.selection(this.population);
 		
@@ -264,8 +268,6 @@ public class GeneticAlgorithm {
 		List<Integer> selectedCrossoverIndexSol = new ArrayList<>();
 		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm(this.crossoverOperator, this.crossoverProbability, this.crosspointsNum, 25);
 	
-//		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm("treeswap", 0.7, 0, 25);
-
 		double prop; 
 		//Get selected solutions.
 		for (int i = 0; i < this.population.size(); i++) {
@@ -278,6 +280,7 @@ public class GeneticAlgorithm {
 		if(selectedCrossoverIndexSol.size() % 2 != 0)
 			selectedCrossoverIndexSol.remove(selectedCrossoverIndexSol.size() - 1);
 		int parentPos1, parentPos2;
+		System.out.println("SELECTED REPRODUCE: " + selectedCrossoverIndexSol);
 		for(int i = 0; i < selectedCrossoverIndexSol.size() - 1; i += 2) {
 			
 			parentPos1 = selectedCrossoverIndexSol.get(i);

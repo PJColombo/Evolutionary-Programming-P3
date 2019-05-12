@@ -21,10 +21,12 @@ public class TreeMutation extends MutationOperator {
 	public <T> Chromosome<? extends Gene<T>> mutation(Chromosome<? extends Gene<T>> c1) {
 		List<? extends Gene<T>> genes = c1.getGenes();
 		List<T> alleles;
+		boolean mutate = false;
 		double p;
 		for(int i = 0; i < genes.size(); i++) {
 			p = ThreadLocalRandom.current().nextDouble();
 			if(p < mutationProbability) {
+				mutate = true;
 				alleles = genes.get(i).getAlleles();
 				for(int j = 0; j < alleles.size(); j++) {
 					ProgramTree pt = (ProgramTree) alleles.get(j);
@@ -32,6 +34,12 @@ public class TreeMutation extends MutationOperator {
 				}
 			}			
 		}
+		
+		//Need to recalculate some values.
+		if(mutate)
+			c1.evaluate();
+			
+
 		return c1;
 	}
 

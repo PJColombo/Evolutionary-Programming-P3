@@ -31,6 +31,7 @@ public class TreeSwapCrossover extends CrossoverOperator {
 			Gene<T> gene1 = parentGenes1.get(i).clone(),
 					gene2 = parentGenes2.get(i).clone();
 //			System.out.println("G1 "  + gene1);
+//			
 //			System.out.println("||||||||||||||||||||||||||||||||||||||||||||||");
 //			System.out.println("G2 " + gene2);
 			childAlleles1 = gene1.getAlleles(); childAlleles2 = gene2.getAlleles();
@@ -44,10 +45,15 @@ public class TreeSwapCrossover extends CrossoverOperator {
 //			System.out.println(gene1);
 //			System.out.println("---------------------------");
 //			System.out.println(gene2);
-			childGenes1.add(gene1); childGenes2.add(gene2);
+			childGenes1.add(parentGenes1.get(i).createGene(childAlleles1)); childGenes2.add(parentGenes2.get(i).createGene(childAlleles2));
 		}
 		childChromosomes.setLeftElement(parent1.createChildren(childGenes1));
 		childChromosomes.setRightElement(parent2.createChildren(childGenes2));
+//		
+//		System.out.println("PG1 Fitness: " + parent1.getFitness());
+//		System.out.println("PG2 Fitness: " + parent2.getFitness());
+//		System.out.println("CG1 Fitness: " + childChromosomes.getLeftElement().getFitness());
+//		System.out.println("CG2 Fitness: " + childChromosomes.getRightElement().getFitness());
 		
 		return childChromosomes;
 	}
@@ -74,11 +80,7 @@ public class TreeSwapCrossover extends CrossoverOperator {
 				}
 				else
 					secondTree = exchangeTree;
-//				System.out.println("...........................................");
-//				System.out.println(selectedTree);
-//				System.out.println("...........................................");
 				currTree.replaceChildren(i, secondTree);
-//				currTree.getChildren().set(i, secondTree);
 			}
 			else
 				selectedTree = recursiveExchangeTrees(currChild, secondParentTree, exchangeTree);

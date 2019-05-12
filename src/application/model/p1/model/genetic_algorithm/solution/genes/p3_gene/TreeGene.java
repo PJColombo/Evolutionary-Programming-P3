@@ -69,10 +69,7 @@ public class TreeGene extends Gene<ProgramTree> {
 	}
 	
 	@Override
-	public void decodeGene() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void decodeGene() {}
 
 	@Override
 	public Gene<ProgramTree> createGene(List<ProgramTree> alleles) {
@@ -155,7 +152,7 @@ public class TreeGene extends Gene<ProgramTree> {
 	
 	@Override
 	public String toString() {
-		return this.alleles.get(0).toString() + System.lineSeparator();
+		return this.alleles.get(0).toString() /*+ System.lineSeparator()*/;
 		
 		/*return this.alleles.get(0).toString() + System.lineSeparator() + "FINAL BOARD (" + finalBoard.getAnt().getCurrPos().getLeftElement()
 				+ ", " + finalBoard.getAnt().getCurrPos().getRightElement() + ") "+ System.lineSeparator() +  finalBoard.toString();*/
@@ -165,6 +162,9 @@ public class TreeGene extends Gene<ProgramTree> {
 		return finalBoard;
 	}
 
+	public void restartFinalBoard() {
+		finalBoard = initialBoard.clone();
+	}
 	public boolean isHalf() {
 		return isHalf;
 	}
