@@ -123,7 +123,6 @@ public class GeneticAlgorithm {
 		this.createInitialPopulation();
 		this.treatBLoating();
 		stats.add(this.evaluatePopulation());
-		this.printPopulation();
 
 		while(this.generations < this.maxGenNumber) {
 			this.generations++;
@@ -131,14 +130,8 @@ public class GeneticAlgorithm {
 				this.extractElite(elite);
 			
 			this.select();
-			System.out.println("SELECTION");
-			this.printPopulation();
 			this.reproduce();
-			System.out.println("REPRODUCTION");
-			this.printPopulation();
 			this.mutate();
-			System.out.println("MUTATION");
-			this.printPopulation();
 			
 			if(this.elitism)
 				this.includeElite(elite);
@@ -149,33 +142,9 @@ public class GeneticAlgorithm {
 				System.out.println("Generation " + this.generations + "|| " + s);
 			}
 			stats.add(s);
-			//this.printPopulation();
 		}
 		this.printPopulation();
 		return stats;
-	}
-	private void createInitialPopulation1() {
-		popSize = 279;
-		int currentDepth = 2, 
-				mod = popSize / (this.maxDepth - 1), 
-				mod2 = (mod)/ 2;
-		boolean isFull = false;
-		int currGroup = mod, currInitMethod = mod2;
-		for (int i = 1; i <= this.popSize; i++) {
-			if(i == 200)
-				System.out.println("aqui");
-			if(i < popSize && i % mod == 0) {
-				currentDepth = currentDepth + 1;
-				currGroup += mod;
-			}
-			if(i < popSize && i % mod2 == 0) {
-				isFull = !isFull;
-				currInitMethod += mod2;
-			} 
-			
-			//TODO change hardcoded santa fe board for generic board and harcoded ant chromosome ?
-			this.population.add(ChromosomeFactory.getInstance().createAntChromosome("ant", true, currentDepth, isFull, new SantaFeBoard()));
-		}
 	}
 	
 	private void createInitialPopulation() {
@@ -280,7 +249,6 @@ public class GeneticAlgorithm {
 		if(selectedCrossoverIndexSol.size() % 2 != 0)
 			selectedCrossoverIndexSol.remove(selectedCrossoverIndexSol.size() - 1);
 		int parentPos1, parentPos2;
-		System.out.println("SELECTED REPRODUCE: " + selectedCrossoverIndexSol);
 		for(int i = 0; i < selectedCrossoverIndexSol.size() - 1; i += 2) {
 			
 			parentPos1 = selectedCrossoverIndexSol.get(i);

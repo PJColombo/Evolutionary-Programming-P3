@@ -14,7 +14,6 @@ public class RouletteSelection implements SelectionAlgorithm {
 	@Override
 	public <T> List<? extends Chromosome<? extends Gene<T>>> selection(List<? extends Chromosome<? extends Gene<T>>> population) {
 		List<Chromosome<? extends Gene<T>>> newPopulation = new ArrayList<>(population.size());
-		List<Integer> survivors = new ArrayList<Integer>(population.size());
 		int popSize = population.size();
 		double probability;
 		int survPos;
@@ -25,10 +24,8 @@ public class RouletteSelection implements SelectionAlgorithm {
 					(probability > population.get(survPos).getAccuScore()))
 				survPos++;
 			newPopulation.add(population.get(survPos).clone());
-			survivors.add(survPos);
 		}
 		
-		System.out.println("SURVIVORS: " + survivors);
 		return newPopulation;
 	}
 }
