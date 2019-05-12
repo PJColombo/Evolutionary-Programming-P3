@@ -13,7 +13,9 @@ public class Board {
 	private final static char 
 			FOOD_CELL = '#',
 			EMPTY_CELL = '0',
-			CURR_CELL = '@';
+			CURR_CELL = '@',
+			STEPPED_CELL = '.',
+			ATE_CELL = '-';
 	
 	private Integer maxActionUnits = 400;
 	
@@ -47,15 +49,16 @@ public class Board {
 	public void moveAnt() {
 		Pair<Integer, Integer> pos, newPos;
 		pos = ant.getCurrPos();
-		board[pos.getLeftElement()][pos.getRightElement()] = EMPTY_CELL;
+		board[pos.getLeftElement()][pos.getRightElement()] = STEPPED_CELL;
 		
 		newPos = this.calaculateAntNewPosition();
 		ant.setCurrPos(newPos);
 		if(board[newPos.getLeftElement()][newPos.getRightElement()] == FOOD_CELL) {
 			ant.incrementFoodCounter();
-			board[newPos.getLeftElement()][newPos.getRightElement()] = CURR_CELL;
+			
 		}
 		
+		board[newPos.getLeftElement()][newPos.getRightElement()] = CURR_CELL;
 		ant.incrementActionCounter();
 	}
 	
@@ -119,4 +122,13 @@ public class Board {
 		return new Board(this);
 	}
 	
+	public String toString() {
+		String s = "";
+		for (char[] row : board) {
+			for (char col : row) 
+				s += col + " ";
+			s += "\n";
+		}
+		return s;
+	}
 }

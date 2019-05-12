@@ -8,9 +8,6 @@ import application.model.p3_board.Board;
 
 public class TurnRightTerminalCommand implements Command {
 
-	private int numChild = 0;
-
-
 	@Override
 	public void execute(List<ProgramTree> commands, Board board) {
 		if(board.areActionUnitsLeft())
@@ -20,7 +17,7 @@ public class TurnRightTerminalCommand implements Command {
 	
 	@Override
 	public int getNumOfChilds() {
-		return this.numChild ;
+		return 0;
 	}
 	
 	@Override

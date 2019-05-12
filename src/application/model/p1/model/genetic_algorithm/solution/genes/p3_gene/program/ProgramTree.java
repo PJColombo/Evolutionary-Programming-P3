@@ -13,6 +13,8 @@ public class ProgramTree {
 	private ArrayList<ProgramTree> children;
 	private int height;
 	
+	private int numTrees;
+	
 	public ProgramTree() {}
 	
 	public ProgramTree(Command root) {
@@ -20,6 +22,7 @@ public class ProgramTree {
 		this.root = root;
 		children = new ArrayList<ProgramTree>();
 		height = 1;
+		numTrees = 1;
 	}
 	
 	public ProgramTree(ProgramTree pt) {
@@ -27,6 +30,7 @@ public class ProgramTree {
 		root = pt.root;
 		height = pt.height;
 		children = new ArrayList<ProgramTree>(pt.children.size());
+		numTrees = pt.numTrees;
 		ProgramTree cloneTreeChild;
 		for (ProgramTree programTree : pt.children) {
 			cloneTreeChild = programTree.clone(); 
@@ -40,11 +44,15 @@ public class ProgramTree {
 		children.add(t);
 		if(t.height + 1 > height)
 			height = 1 + t.height;
+		numTrees += t.numTrees;
 	}
 	
 	public void replaceChildren(int i, ProgramTree newPt) {
 		newPt.parent = this;
+		numTrees -= children.get(i).numTrees;
 		children.set(i, newPt);
+		numTrees += newPt.numTrees;
+		
 		recalculateHeight(newPt.height, i);
 	}
 	
@@ -100,6 +108,10 @@ public class ProgramTree {
 		this.height = height;
 	}
 	
+	public int getNumTrees() {
+		return numTrees;
+	}
+
 	public void setRoot(Command newRoot) {
 		root = newRoot;
 	}
@@ -150,24 +162,8 @@ public class ProgramTree {
 		return (root.getNumOfChilds() > 0) ? true : false;
 	}
 	
-//	@Override
-//	public String toString() {
-//		String retVal = this.root.toString();
-//		
-//		if(this.root.getNumOfChilds() == 2) {
-//			retVal +=  System.lineSeparator() + " (" + this.children.get(0).toString() + "," + System.lineSeparator() + this.children.get(1).toString() + ")";
-//		}
-//		else if(this.root.getNumOfChilds() == 3) {
-//			retVal += System.lineSeparator() + " (" + this.children.get(0).toString() + "," +  System.lineSeparator() + this.children.get(1).toString()
-//					+ "," + System.lineSeparator() + this.children.get(2).toString() + ")";
-//			
-//			
-//		}
-//		return retVal;
-//	}
-//	
 	public String toString() {
-		return recurToString(1);
+		return  "Height: " + height + System.lineSeparator() + "NumTrees: " + numTrees + System.lineSeparator() + recurToString(1);
 	}
 	
 	private String recurToString(int nTab) {

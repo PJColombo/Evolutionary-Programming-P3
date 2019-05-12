@@ -69,10 +69,9 @@ public class ProgramChromosome extends Chromosome<TreeGene> {
 		int fitness = 0;
 		for (TreeGene tg : genes) 
 			fitness += tg.executeGeneTree();
-		System.out.println("ant last pos: " + genes.get(0).getFinalBoard().getAnt().getCurrPos().getLeftElement() + ", "
-				+ genes.get(0).getFinalBoard().getAnt().getCurrPos().getRightElement());
-		System.out.println("ant action counter: " + genes.get(0).getFinalBoard().getAnt().getActionCounter());
-		System.out.println("Fitness: " + fitness);
+//		System.out.println("ant last pos: " + genes.get(0).getFinalBoard().getAnt().getCurrPos().getLeftElement() + ", "
+//				+ genes.get(0).getFinalBoard().getAnt().getCurrPos().getRightElement());
+//		System.out.println("Fitness: " + fitness);
 		return fitness;
 	}
 
@@ -96,7 +95,7 @@ public class ProgramChromosome extends Chromosome<TreeGene> {
 	
 	@Override
 	public String toString() {
-		String c = "Fitness: " + fitness + " | NFitness: " + normalizedFitness + " | Score: " + score + " | AScore: " + accuScore
+		String c = "Foot ate: " + genes.get(0).getFinalBoard().getAnt().getFoodCounter() + " | Fitness: " + fitness + " | NFitness: " + normalizedFitness + " | Score: " + score + " | AScore: " + accuScore
 				+ System.lineSeparator();
 		return c + genes.get(0).toString();
 	}

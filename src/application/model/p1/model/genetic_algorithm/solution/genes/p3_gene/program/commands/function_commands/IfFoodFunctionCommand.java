@@ -8,8 +8,6 @@ import application.model.p3_board.Board;
 
 public class IfFoodFunctionCommand implements Command {
 
-	private int numChild = 2;
-
 	@Override
 	public void execute(List<ProgramTree> parameters, Board board) {
 		if(parameters.size() == 2 && board.areActionUnitsLeft()) {
@@ -22,7 +20,7 @@ public class IfFoodFunctionCommand implements Command {
 
 	@Override
 	public int getNumOfChilds() {
-		return this.numChild;
+		return 2;
 	}
 	
 	@Override
