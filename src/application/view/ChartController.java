@@ -228,7 +228,7 @@ public class ChartController implements Initializable{
         		
         		stats = this.ge.execute();
         		
-        		printBoard(stats.get(0).getBestBoard());
+        		printBoard(Stat.getBestBoard());
         		
         		
         		XYChart.Series<String,Number> absolutBest_series = new XYChart.Series<String,Number>();
@@ -312,7 +312,7 @@ public class ChartController implements Initializable{
     	Double[] args = getData();
         String errorMessage = "";
 
-        //Tamaño de la poblacion
+        //Tamaï¿½o de la poblacion
         if (args[0] < 0) 
             errorMessage += "Population size must be greater than 0.\n";
         
@@ -341,11 +341,11 @@ public class ChartController implements Initializable{
         if (crossAlgorithm.getValue() == null)
         	errorMessage += "Algoritmo de cruce no seleccionado\n";
 		if (mutationAlgorithm.getValue() == null)
-			errorMessage += "Mutación no seleccionada\n";
+			errorMessage += "Mutaciï¿½n no seleccionada\n";
 		if (function.getValue() == null)
-			errorMessage += "Función no seleccionada\n";
+			errorMessage += "Funciï¿½n no seleccionada\n";
 		if (selAlgorithm.getValue()== null)
-			errorMessage += "Algoritmo de selección no seleccionado\n";
+			errorMessage += "Algoritmo de selecciï¿½n no seleccionado\n";
 		
         if (errorMessage.length() == 0) {
         	errorMsg.setText("Executing algorithm...");
@@ -378,6 +378,7 @@ public class ChartController implements Initializable{
     }   
     
     private void printBoard(Board board) {
+    	System.out.println(board);
     	char[][] b = board.getBoard();
         for (int i = 0; i < 32; i++) {
 			for (int j = 0; j < 32; j++) {

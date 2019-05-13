@@ -6,7 +6,7 @@ public class Stat {
 	private double averagePopulationFitness;
 	private double bestGenerationIndividualFitness;
 	private double bestIndividualFitness;
-	private Board bestBoard;
+	private static Board bestBoard;
 	
 	public Stat() {}
 	
@@ -28,8 +28,8 @@ public class Stat {
 		return bestIndividualFitness;
 	}
 	
-	public Board getBestBoard() {
-		return this.bestBoard;
+	public static Board getBestBoard() {
+		return bestBoard;
 	}
 	
 	public void setAveragePopulationFitness(double averagePopulationFitness) {
@@ -42,8 +42,8 @@ public class Stat {
 		this.bestIndividualFitness = bestIndividualFitness;
 	}
 	
-	public void setBestBoard(Board best) {
-		this.bestBoard = best.clone();
+	public static void setBestBoard(Board best) {
+		bestBoard = best.clone();
 	}
 	
 	@Override
