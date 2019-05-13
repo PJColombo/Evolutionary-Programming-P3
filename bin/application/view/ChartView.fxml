@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -17,21 +11,25 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="821.0" prefWidth="1345.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.ChartController">
+<AnchorPane prefHeight="892.0" prefWidth="1345.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.ChartController">
    <children>
-      <ScrollPane prefHeight="850.0" prefViewportHeight="848.0" prefViewportWidth="1343.0" prefWidth="1345.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane prefHeight="895.0" prefViewportHeight="848.0" prefViewportWidth="1343.0" prefWidth="1345.0" AnchorPane.bottomAnchor="-74.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
             <AnchorPane prefHeight="736.0" prefWidth="1148.0">
                <children>
-                  <SplitPane dividerPositions="0.2766592095451156" prefHeight="817.0" prefWidth="1343.0">
+                  <SplitPane dividerPositions="0.2766592095451156" prefHeight="958.0" prefWidth="1343.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="940.0" prefWidth="367.0">
                            <children>
                               <TextField fx:id="tamPopulation" layoutX="220.0" layoutY="60.0" prefHeight="31.0" prefWidth="115.0" AnchorPane.topAnchor="60.0" />
                               <TextField fx:id="numGenerations" layoutX="220.0" layoutY="99.0" prefHeight="31.0" prefWidth="115.0" AnchorPane.topAnchor="99.0" />
@@ -105,9 +103,9 @@
                               <Label layoutX="13.0" layoutY="445.0" prefHeight="37.0" prefWidth="71.0" text="Rest Alg:" />
                            </children>
                         </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="875.0" prefWidth="1201.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="724.0" prefWidth="966.0">
                            <children>
-                              <TextArea fx:id="errorMsg" editable="false" layoutX="40.0" layoutY="686.0" prefHeight="98.0" prefWidth="641.0" wrapText="true" />
+                              <TextArea fx:id="errorMsg" editable="false" layoutX="40.0" layoutY="678.0" prefHeight="267.0" prefWidth="641.0" wrapText="true" />
                               <Button layoutX="849.0" layoutY="713.0" mnemonicParsing="false" onAction="#clear" prefHeight="45.0" prefWidth="65.0" text="Clear" AnchorPane.rightAnchor="51.0" />
                               <Button layoutX="709.0" layoutY="705.0" mnemonicParsing="false" onAction="#run" prefHeight="60.0" prefWidth="98.0" text="Run" textFill="#171717" AnchorPane.leftAnchor="709.0" />
                               <Separator layoutY="649.0" prefHeight="23.0" prefWidth="1058.0" />

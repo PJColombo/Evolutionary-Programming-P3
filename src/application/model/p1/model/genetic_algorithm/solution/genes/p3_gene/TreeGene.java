@@ -83,44 +83,13 @@ public class TreeGene extends Gene<ProgramTree> {
 
 	
 	@Override
-	public void mutate(int flag) {
-//		exeMutation(this.alleles.get(0), flag);
-	}
+	public void mutate(int flag) {}
 
 	@Override
 	protected void initializeGene() {
 		ProgramTree pt = ProgramTree.initializeTree(1, maxDepth, isHalf);
 		this.alleles.add(pt);
 	}
-	
-	/**
-	 * 
-	 * @param node: El nodo que estamos recorriendo
-	 * @param flag: Para determinar si es una mutaci�n de terminal (0) o de function (1)
-	 * @return un boolean para saber si se ha producido ya la mutaci�n
-	 */
-//	private boolean exeMutation(ProgramTree node, int flag) {
-//		boolean isMutated = false;
-//		CommandFactory cf = CommandFactory.getInstance();
-//		if((flag == 0) ? node.isTerminal() : node.isFunction()) {
-//			double prob = ThreadLocalRandom.current().nextDouble();
-//			if (prob < 0.5) {
-//				return false; 
-//			}else if(node.getRoot().getNumOfChilds() == 2 && flag == 1){
-//				node.setRoot(cf.createRandomCommand(3));
-//				return true;
-//			}else if(flag == 0){
-//				node.setRoot(cf.createRandomCommand(1));
-//				return true;
-//			}else return false;
-//		}
-//		else {
-//			for (int i = 0; i < node.getChildren().size() && !isMutated; i++) {
-//				isMutated = exeMutation(node.getChildren().get(i), flag);
-//			}
-//		}
-//		return isMutated;
-//	}
 	
 	public int executeGeneTree() {
 		alleles.get(0).executeTree(finalBoard);
@@ -133,10 +102,10 @@ public class TreeGene extends Gene<ProgramTree> {
 	
 	@Override
 	public String toString() {
-		return this.alleles.get(0).toString() /*+ System.lineSeparator()*/;
+		//return this.alleles.get(0).toString() /*+ System.lineSeparator()*/;
 		
-		/*return this.alleles.get(0).toString() + System.lineSeparator() + "FINAL BOARD (" + finalBoard.getAnt().getCurrPos().getLeftElement()
-				+ ", " + finalBoard.getAnt().getCurrPos().getRightElement() + ") "+ System.lineSeparator() +  finalBoard.toString();*/
+		return this.alleles.get(0).toString() + System.lineSeparator() + "FINAL BOARD (" + finalBoard.getAnt().getCurrPos().getLeftElement()
+				+ ", " + finalBoard.getAnt().getCurrPos().getRightElement() + ") "+ System.lineSeparator() +  finalBoard.toString();
 	}
 
 	public Board getFinalBoard() {

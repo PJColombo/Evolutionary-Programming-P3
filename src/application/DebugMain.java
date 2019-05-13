@@ -9,7 +9,7 @@ import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.progr
 public class DebugMain {
 
 	public static void main(String[] args) {
-		GeneticAlgorithm ge = new GeneticAlgorithm(null, "TSP", 100, 40, "roullete", "treeswap", 0.6, "tree", 0.45, 0.0, true, "roullete");
+		GeneticAlgorithm ge = new GeneticAlgorithm(null, "TSP", 3000, 1024, "roullete", "treeswap", 0.77, "tree", 0.78, 0.0, true, "roullete");
 		
 		ge.execute();
 	}

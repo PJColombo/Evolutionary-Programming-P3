@@ -124,10 +124,9 @@ public class GeneticAlgorithm {
 		this.createInitialPopulation();
 		this.treatBLoating();
 		stats.add(this.evaluatePopulation());
-		this.printPopulation();
 		while(this.generations < this.maxGenNumber) {
 			this.generations++;
-//			System.out.println(generations);
+			System.out.println(generations);
 			if(this.elitism)
 				this.extractElite(elite);
 			this.select();
@@ -138,9 +137,7 @@ public class GeneticAlgorithm {
 			
 			this.treatBLoating();
 			Stat s = this.evaluatePopulation();
-//			if(this.generations == this.maxGenNumber) {		
-//				System.out.println("Generation " + this.generations + "|| " + s);
-//			}
+
 			stats.add(s);
 		}
 		return stats;
@@ -218,9 +215,6 @@ public class GeneticAlgorithm {
 		stat.setBestIndividualFitness(this.bestSolution.getFitness());
 		stat.setBestBoard(((ProgramChromosome) this.bestSolution).getFinalBoard());
 		
-//		System.out.println("best solution");
-//		System.out.println(bestSolution);
-//		System.out.println(((ProgramChromosome) this.bestSolution).getFinalBoard());
 		return stat; 
 	}
 	
@@ -271,10 +265,10 @@ public class GeneticAlgorithm {
 	}
 		
 	public void printPopulation() {
-//		for (int i = 0; i < this.population.size(); i++) {
-//			System.out.println(i + ")   " + this.population.get(i));
-//			System.out.println("------------------------------------------");
-//		}
+		for (int i = 0; i < this.population.size(); i++) {
+			System.out.println(i + ")   " + this.population.get(i));
+			System.out.println("------------------------------------------");
+		}
 	}
 	
 	private void treatBLoating() {
@@ -282,10 +276,8 @@ public class GeneticAlgorithm {
 		
 		BloatingMethod bM = BloatingFactory.getInstance().createBloatingMethod(bloatingMethodName, population);
 		for (Chromosome<? extends Gene<?>> c : population) {
-			System.out.println("Old: "+ c.getFitness());
 			newFitness = bM.calculateFitness(c);
 			c.setFitness(newFitness);
-			System.out.println("New: " + newFitness);
 		}
 		
 	}
