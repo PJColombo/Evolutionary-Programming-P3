@@ -216,6 +216,7 @@ public class ChartController implements Initializable{
         //Call the model
     	
     	if(isInputValid()) {  
+    		clearBoard();
     		chart.getData().clear();
     		chart.getXAxis().setLabel("Generations");
             chart.getYAxis().setLabel("Fitness");
@@ -384,6 +385,7 @@ public class ChartController implements Initializable{
 				switch (b[i][j]) {
 				//Food
 				case '#':
+					
 					cell.setStyle("-fx-background-color: gold;");
 					break;
 				//Empty
@@ -404,12 +406,19 @@ public class ChartController implements Initializable{
 					break;
 				
 				}
-				
 				this.board.add(cell, j, i);
 			}
 		}
         this.board.getStyleClass().add("-fx-stroke-borders: black;");
     }
+    
+    private void clearBoard(){
+		for (Node node : board.getChildren()) {
+			StackPane cell = (StackPane)node;
+			cell.getStyleClass().clear();
+		}
+    }
+    
     public void setMainApp(Main main) {}
 }
 

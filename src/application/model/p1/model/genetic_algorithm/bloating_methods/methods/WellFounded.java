@@ -19,9 +19,11 @@ public class WellFounded implements BloatingMethod {
 		List<Double> treeSizes = new ArrayList<Double>(population.size()),
 				treeFitness = new ArrayList<Double>(population.size());
 		
+		//p copia de pob
 		for (Chromosome<? extends Gene<?>> c : population)
 			p.add((ProgramChromosome) c);
 		
+		//treeSize lista de altura, tree fitness lista de fitness
 		for (ProgramChromosome c : p) {
 			treeSizes.add(Double.valueOf(c.getGenes().get(0).getAlleles().get(0).getHeight()));
 			treeFitness.add(c.getFitness());
