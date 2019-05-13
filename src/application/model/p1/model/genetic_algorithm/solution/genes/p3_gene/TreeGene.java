@@ -69,10 +69,7 @@ public class TreeGene extends Gene<ProgramTree> {
 	}
 	
 	@Override
-	public void decodeGene() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void decodeGene() {}
 
 	@Override
 	public Gene<ProgramTree> createGene(List<ProgramTree> alleles) {
@@ -92,83 +89,9 @@ public class TreeGene extends Gene<ProgramTree> {
 
 	@Override
 	protected void initializeGene() {
-		this.alleles.add(ProgramTree.initializeTree(1, maxDepth, isHalf));
+		ProgramTree pt = ProgramTree.initializeTree(1, maxDepth, isHalf);
+		this.alleles.add(pt);
 	}
-	
-
-//	private ProgramTree recurInitializeGene(int currentDepth){
-//		ProgramTree currentProgramTree = null;
-//		int cD = currentDepth;
-//		
-//		if(currentDepth == this.maxDepth)
-//			return new ProgramTree(pickCommand(randomSelector(1)));
-//		else{
-//			Command c;
-//			if(isHalf) {
-//				if(currentDepth == 1)
-//					c = pickCommand(randomSelector(0));
-//				else 
-//					c = pickCommand(randomSelector(2));
-//			}else 
-//					c = pickCommand(randomSelector(0));
-//			
-//			
-//			currentProgramTree = new ProgramTree(c);
-//			for (int i = 0; i < c.getNumOfChilds(); i++) {
-//				ProgramTree child = recurInitializeGene(cD + 1);
-//				currentProgramTree.addChildren(child);
-//			}
-//		}
-//		return currentProgramTree;
-//	}
-
-//	/**
-//	 * @param num : eleccion del comando a generar
-//	 * @return 3 opciones:
-//	 *  - Una funcion
-//	 *  - Un terminal
-//	 *  - Aleatorio
-//	 *  - Una funcion de 2 hijos
-//	 */
-//	private int randomSelector(int num) {
-//		int elem;
-//		switch (num) {
-//		case 0:
-//			elem = ThreadLocalRandom.current().nextInt(0, 3);
-//			break;
-//		case 1:
-//			elem = ThreadLocalRandom.current().nextInt(3, 6);
-//			break;
-//		case 2:
-//			elem = ThreadLocalRandom.current().nextInt(0, 6);
-//			break;
-//		case 3:
-//			elem = ThreadLocalRandom.current().nextInt(0, 2);
-//			break;
-//		default:
-//			elem = ThreadLocalRandom.current().nextInt(0, 6);
-//		}
-//		return elem;
-//	}
-	
-//	private Command pickCommand(int elem) {	
-//		switch(elem) {
-//		case 0: 
-//			return new IfFoodFunctionCommand();
-//		case 1: 
-//			return new Progn2FunctionCommand();
-//		case 2: 
-//			return new Progn3FunctionCommand();
-//		case 3: 
-//			return new MoveForwardTerminalCommand();
-//		case 4: 
-//			return new TurnLeftTerminalCommand();
-//		case 5: 
-//			return new TurnRightTerminalCommand();
-//		default:
-//			return new MoveForwardTerminalCommand();
-//		}
-//	}
 	
 	/**
 	 * 
@@ -200,6 +123,25 @@ public class TreeGene extends Gene<ProgramTree> {
 	}
 	
 	public int executeGeneTree() {
+//		ProgramTree test = new ProgramTree(new Progn3FunctionCommand());
+//		ProgramTree child1 = new ProgramTree(new Progn3FunctionCommand());
+//		child1.addChildren(new ProgramTree(new MoveForwardTerminalCommand()));
+//		child1.addChildren(new ProgramTree(new MoveForwardTerminalCommand()));
+//		child1.addChildren(new ProgramTree(new MoveForwardTerminalCommand()));
+//		
+//		ProgramTree child2 = new ProgramTree(new IfFoodFunctionCommand());
+//		child2.addChildren(new ProgramTree( new MoveForwardTerminalCommand()));
+//		child2.addChildren(new ProgramTree(new TurnRightTerminalCommand()));
+//		
+//		ProgramTree child3 = new ProgramTree(new IfFoodFunctionCommand());
+//		child3.addChildren(new ProgramTree(new TurnLeftTerminalCommand()));
+//		child3.addChildren(new ProgramTree(new TurnLeftTerminalCommand()));
+//		
+//		test.addChildren(child1);
+//		test.addChildren(child2);
+//		test.addChildren(child3);
+//		
+//		test.executeTree(finalBoard);
 		alleles.get(0).executeTree(finalBoard);
 		return getAntFoodEated();
 	}
@@ -210,13 +152,19 @@ public class TreeGene extends Gene<ProgramTree> {
 	
 	@Override
 	public String toString() {
-		return "Height: " + alleles.get(0).getHeight() + System.lineSeparator() + this.alleles.get(0).toString();
+		return this.alleles.get(0).toString() /*+ System.lineSeparator()*/;
+		
+		/*return this.alleles.get(0).toString() + System.lineSeparator() + "FINAL BOARD (" + finalBoard.getAnt().getCurrPos().getLeftElement()
+				+ ", " + finalBoard.getAnt().getCurrPos().getRightElement() + ") "+ System.lineSeparator() +  finalBoard.toString();*/
 	}
 
 	public Board getFinalBoard() {
 		return finalBoard;
 	}
 
+	public void restartFinalBoard() {
+		finalBoard = initialBoard.clone();
+	}
 	public boolean isHalf() {
 		return isHalf;
 	}

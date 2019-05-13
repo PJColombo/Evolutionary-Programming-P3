@@ -43,7 +43,7 @@ public class Stat {
 	}
 	
 	public void setBestBoard(Board best) {
-		this.bestBoard = best;
+		this.bestBoard = best.clone();
 	}
 	
 	@Override

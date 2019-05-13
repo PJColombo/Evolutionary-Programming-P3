@@ -394,7 +394,17 @@ public class ChartController implements Initializable{
 				case '@':
 					cell.setStyle("-fx-background-color: lightpink;");
 					break;
+				//stepped
+				case '.':
+					cell.setStyle("-fx-background-color: mediumseagreen;");
+					break;
+				//eaten
+				case '-':
+					cell.setStyle("-fx-background-color: darkorange;");
+					break;
+				
 				}
+				
 				this.board.add(cell, j, i);
 			}
 		}

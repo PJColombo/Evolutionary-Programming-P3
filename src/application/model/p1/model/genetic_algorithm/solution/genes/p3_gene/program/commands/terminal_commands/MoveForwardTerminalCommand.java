@@ -9,7 +9,6 @@ import application.model.p3_board.Board;
 public class MoveForwardTerminalCommand implements Command {
 
 	 
-	private int numChild=0;
 
 
 	@Override
@@ -21,7 +20,7 @@ public class MoveForwardTerminalCommand implements Command {
 	
 	@Override
 	public int getNumOfChilds() {
-		return this.numChild;
+		return 0;
 	}
 	
 	@Override

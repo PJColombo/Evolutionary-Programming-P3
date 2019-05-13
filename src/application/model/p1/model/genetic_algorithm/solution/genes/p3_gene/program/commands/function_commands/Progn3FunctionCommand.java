@@ -7,9 +7,7 @@ import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.progr
 import application.model.p3_board.Board;
 
 public class Progn3FunctionCommand implements Command {
-	
-	private int numChild = 3;
-	
+		
 	@Override
 	public void execute(List<ProgramTree> parameters, Board board) {
 		if(parameters.size() == 3 && board.areActionUnitsLeft()) {
@@ -21,7 +19,7 @@ public class Progn3FunctionCommand implements Command {
 
 	@Override
 	public int getNumOfChilds() {
-		return this.numChild;
+		return 3;
 	}
 	
 	@Override

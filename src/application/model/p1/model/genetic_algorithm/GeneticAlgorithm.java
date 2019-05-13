@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import application.model.p1.model.genetic_algorithm.bloating_methods.BloatingFactory;
+import application.model.p1.model.genetic_algorithm.bloating_methods.BloatingMethod;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.crossover.CrossoverOperator;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.crossover.CrossoverOperatorFactory;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.mutation.MutationOperator;
@@ -49,6 +51,8 @@ public class GeneticAlgorithm {
 	
 	private String restSelectionAlgorithm;
 	
+	private String bloatingMethodName;
+	
 	public GeneticAlgorithm(Integer nVariables, String function, int popSize, int maxGenNumber, String selectionAlgorithm, String crossoverOperator,
 			double crossoverProbability, String mutationOperator, double mutationProbability, double tolerance, boolean elitism, String restSelectionAlg) {
 		super();
@@ -64,6 +68,9 @@ public class GeneticAlgorithm {
 		this.mutationProbability = mutationProbability;
 		this.tolerance = tolerance;
 		this.elitism = elitism;
+		
+		this.bloatingMethodName = "tarpeian";
+		
 		if(this.elitism)
 			this.eliteSize = (int) Math.ceil(popSize * this.ELITISIM_PERCENTAGE);
 		
@@ -113,9 +120,10 @@ public class GeneticAlgorithm {
 		List<Stat> stats = new ArrayList<>(this.maxGenNumber);
 		List<Chromosome<? extends Gene<?>>> elite = new ArrayList<>(eliteSize);
 
-		this.createInitialPopulation();	
-		this.printPopulation();
+		this.createInitialPopulation();
+		this.treatBLoating();
 		stats.add(this.evaluatePopulation());
+
 		while(this.generations < this.maxGenNumber) {
 			this.generations++;
 			if(this.elitism)
@@ -127,25 +135,38 @@ public class GeneticAlgorithm {
 			
 			if(this.elitism)
 				this.includeElite(elite);
+			
+			this.treatBLoating();
 			Stat s = this.evaluatePopulation();
 			if(this.generations == this.maxGenNumber) {		
 				System.out.println("Generation " + this.generations + "|| " + s);
 			}
 			stats.add(s);
 		}
-		
+		this.printPopulation();
 		return stats;
 	}
+	
 	private void createInitialPopulation() {
-		int currentDepth = 1;
-		int mod = 200 / (this.maxDepth - 1);
-		int mod2 = (mod)/ 2;
-		boolean isFull = false;
-		for (int i = 0; i < this.popSize; i++) {
-			if( i % mod == 0) currentDepth++;
-			if( i % mod2 == 0) isFull = !isFull; 
-			//TODO change hardcoded santa fe board for generic board and harcoded ant chromosome ?
-			this.population.add(ChromosomeFactory.getInstance().createAntChromosome("ant", true, currentDepth, isFull, new SantaFeBoard()));
+		boolean isFull = true;
+		int currentDepth = 2;
+		int groupSize = popSize / (maxDepth - 1), remainingIndividuals = popSize % (maxDepth - 1);
+		List<Integer> groupSizes = new ArrayList<Integer>(maxDepth - 1);
+		for(int i = 0; i < maxDepth - 1; i++) {
+			if(i < remainingIndividuals)
+				groupSizes.add(groupSize + 1);
+			else
+				groupSizes.add(groupSize);
+		}
+		for(int i = 0; i < groupSizes.size(); i++) {
+			for(int j = 0; j < groupSizes.get(i); j++) {
+				if(j == groupSizes.get(i) / 2 + groupSizes.get(i) % 2)
+					isFull = !isFull;
+				this.population.add(ChromosomeFactory.getInstance().
+						createAntChromosome("ant", true, currentDepth, isFull, 
+								new SantaFeBoard()));
+			}
+			currentDepth++;	
 		}
 	}
 	
@@ -199,13 +220,15 @@ public class GeneticAlgorithm {
 		stat.setBestIndividualFitness(this.bestSolution.getFitness());
 		stat.setBestBoard(((ProgramChromosome) this.bestSolution).getFinalBoard());
 		
+		System.out.println("best solution");
+		System.out.println(bestSolution);
+		System.out.println(((ProgramChromosome) this.bestSolution).getFinalBoard());
 		return stat; 
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void select() {
 		SelectionAlgorithmFactory algFactory = SelectionAlgorithmFactory.getInstance();
-		//TODO Add additional selection algorithm field to UI (Rest Selection).
 		SelectionAlgorithm alg = algFactory.getSelectionAlgorithm(this.selectionAlgorithm, 0, null, this.restSelectionAlgorithm, this.population.get(0).isMaximize());
 		this.population = (List<Chromosome<? extends Gene<?>>>) alg.selection(this.population);
 		
@@ -216,8 +239,6 @@ public class GeneticAlgorithm {
 		List<Integer> selectedCrossoverIndexSol = new ArrayList<>();
 		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm(this.crossoverOperator, this.crossoverProbability, this.crosspointsNum, 25);
 	
-//		CrossoverOperator crossOperator = CrossoverOperatorFactory.getInstance().selectAlgorithm("treeswap", 0.7, 0, 25);
-
 		double prop; 
 		//Get selected solutions.
 		for (int i = 0; i < this.population.size(); i++) {
@@ -258,11 +279,21 @@ public class GeneticAlgorithm {
 		}
 	}
 	
+	private void treatBLoating() {
+		double newFitness;
+		BloatingMethod bM = BloatingFactory.getInstance().createBloatingMethod(bloatingMethodName, population);
+		for (Chromosome<? extends Gene<?>> c : population) {
+			newFitness = bM.calculateFitness(c);
+			c.setFitness(newFitness);
+		}
+	}
+	
 	private double normalizePopulationFitness(double extremeFitness) {
 		double accuNFitness = 0;
 		for (Chromosome<? extends Gene<?>> c : population) {
 			if(c.isMaximize())
-				c.setNormalizedFitness(extremeFitness + c.getFitness());
+				//TODO HE MODIFICADO AQUI.
+				c.setNormalizedFitness(Math.abs(extremeFitness) + c.getFitness());
 			else
 				c.setNormalizedFitness(extremeFitness - c.getFitness());
 			accuNFitness += c.getNormalizedFitness();
