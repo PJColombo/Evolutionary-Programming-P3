@@ -123,25 +123,6 @@ public class TreeGene extends Gene<ProgramTree> {
 	}
 	
 	public int executeGeneTree() {
-//		ProgramTree test = new ProgramTree(new Progn3FunctionCommand());
-//		ProgramTree child1 = new ProgramTree(new Progn3FunctionCommand());
-//		child1.addChildren(new ProgramTree(new MoveForwardTerminalCommand()));
-//		child1.addChildren(new ProgramTree(new MoveForwardTerminalCommand()));
-//		child1.addChildren(new ProgramTree(new MoveForwardTerminalCommand()));
-//		
-//		ProgramTree child2 = new ProgramTree(new IfFoodFunctionCommand());
-//		child2.addChildren(new ProgramTree( new MoveForwardTerminalCommand()));
-//		child2.addChildren(new ProgramTree(new TurnRightTerminalCommand()));
-//		
-//		ProgramTree child3 = new ProgramTree(new IfFoodFunctionCommand());
-//		child3.addChildren(new ProgramTree(new TurnLeftTerminalCommand()));
-//		child3.addChildren(new ProgramTree(new TurnLeftTerminalCommand()));
-//		
-//		test.addChildren(child1);
-//		test.addChildren(child2);
-//		test.addChildren(child3);
-//		
-//		test.executeTree(finalBoard);
 		alleles.get(0).executeTree(finalBoard);
 		return getAntFoodEated();
 	}

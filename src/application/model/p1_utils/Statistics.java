@@ -33,7 +33,7 @@ public class Statistics {
 				mean = calculateMean(values);
 		
 		for (Double v : values) 
-			v += Math.pow(v - mean, 2);
+			var += Math.pow(v - mean, 2);
 
 		var /= values.size();
 		

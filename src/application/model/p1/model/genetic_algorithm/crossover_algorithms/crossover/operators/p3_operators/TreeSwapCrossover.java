@@ -8,6 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import application.model.p1.model.genetic_algorithm.crossover_algorithms.crossover.CrossoverOperator;
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.Chromosome;
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
+import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.TreeGene;
 import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.ProgramTree;
 import application.model.p1_utils.Pair;
 
@@ -30,10 +31,8 @@ public class TreeSwapCrossover extends CrossoverOperator {
 		for(int i = 0; i < parentGenes1.size(); i++) {
 			Gene<T> gene1 = parentGenes1.get(i).clone(),
 					gene2 = parentGenes2.get(i).clone();
-//			System.out.println("G1 "  + gene1);
-//			
-//			System.out.println("||||||||||||||||||||||||||||||||||||||||||||||");
-//			System.out.println("G2 " + gene2);
+			int p1 = ((TreeGene) gene1).getAlleles().get(0).getNumTrees(), p2 = ((TreeGene) gene2).getAlleles().get(0).getNumTrees(),
+					p3,p4;
 			childAlleles1 = gene1.getAlleles(); childAlleles2 = gene2.getAlleles();
 			for(int j = 0; j < childAlleles1.size(); j++) {
 				ProgramTree checkTree;
@@ -41,19 +40,11 @@ public class TreeSwapCrossover extends CrossoverOperator {
 					checkTree = this.recursiveExchangeTrees((ProgramTree) childAlleles1.get(j), (ProgramTree) childAlleles2.get(j), null);
 				}while(checkTree == null);
 			}
-//			System.out.println("================================================");
-//			System.out.println(gene1);
-//			System.out.println("---------------------------");
-//			System.out.println(gene2);
+			p3 = ((TreeGene) gene1).getAlleles().get(0).getNumTrees(); p4 = ((TreeGene) gene2).getAlleles().get(0).getNumTrees();			
 			childGenes1.add(parentGenes1.get(i).createGene(childAlleles1)); childGenes2.add(parentGenes2.get(i).createGene(childAlleles2));
 		}
 		childChromosomes.setLeftElement(parent1.createChildren(childGenes1));
 		childChromosomes.setRightElement(parent2.createChildren(childGenes2));
-//		
-//		System.out.println("PG1 Fitness: " + parent1.getFitness());
-//		System.out.println("PG2 Fitness: " + parent2.getFitness());
-//		System.out.println("CG1 Fitness: " + childChromosomes.getLeftElement().getFitness());
-//		System.out.println("CG2 Fitness: " + childChromosomes.getRightElement().getFitness());
 		
 		return childChromosomes;
 	}
@@ -63,7 +54,6 @@ public class TreeSwapCrossover extends CrossoverOperator {
 		int i = 0;
 		double rand, p;
 		ProgramTree currChild;
-		
 		while(selectedTree == null && i < currTree.getChildren().size()) {
 			currChild = currTree.getChildren().get(i);
 			rand = ThreadLocalRandom.current().nextDouble();
@@ -72,6 +62,7 @@ public class TreeSwapCrossover extends CrossoverOperator {
 			else
 				p = TREE_SWAP_PROBABILITY;
 			
+
 			if(rand < p) {
 				selectedTree = currChild;
 				if(secondParentTree != null) {
@@ -87,35 +78,6 @@ public class TreeSwapCrossover extends CrossoverOperator {
 			
 			i++;
 		}
-		return selectedTree;
-	}
-	
-	private ProgramTree findSecondTreeAndExchange(ProgramTree currTree, ProgramTree exchangeTree) {
-		int i = 0;
-		double rand, p;
-		ProgramTree currChild;
-		ProgramTree selectedTree = null;
-		
-		while(selectedTree == null && i < currTree.getChildren().size()) {
-			currChild = currTree.getChildren().get(i);
-			rand = ThreadLocalRandom.current().nextDouble();
-			
-			if(!(currChild.getChildren().size() > 0))
-				p = 1 - TREE_SWAP_PROBABILITY;
-			else
-				p = TREE_SWAP_PROBABILITY;
-			
-			if(rand < p) {
-				selectedTree = currChild;
-//				currTree.getChildren().set(i, exchangeTree);
-				currTree.replaceChildren(i, exchangeTree);
-			}
-			else
-				selectedTree = findSecondTreeAndExchange(currChild, exchangeTree);
-			
-			i++;
-		}
-		
 		return selectedTree;
 	}
 
