@@ -30,15 +30,16 @@ public class WellFounded implements BloatingMethod {
 		System.out.println("Tree sizes " + treeSizes);
 		System.out.println("Tree fitness  " + treeFitness);
 		System.out.println("Covariance: " + Statistics.calculateCovariance(treeSizes, treeFitness));
-		System.out.println("Variance: " + Statistics.calculateStandardDeviation(treeSizes));
-		k = Statistics.calculateCovariance(treeSizes, treeFitness) / Statistics.calculateStandardDeviation(treeSizes);
+		System.out.println("Variance: " + Statistics.calculateVariance(treeSizes));
+		k = Statistics.calculateCovariance(treeSizes, treeFitness) / Statistics.calculateVariance(treeSizes);
+		System.out.println("k = " + k);
 	}
 
 	@Override
 	public double calculateFitness(Chromosome<? extends Gene<?>> c) {
 		ProgramChromosome pc = (ProgramChromosome) c;
 		int numTrees = pc.getGenes().get(0).getAlleles().get(0).getNumTrees();
-		return pc.getFenotype() - (k * numTrees);
+		return pc.getFenotype() + (k * numTrees);
 	}
 
 

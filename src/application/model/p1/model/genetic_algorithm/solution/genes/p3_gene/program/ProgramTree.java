@@ -45,14 +45,36 @@ public class ProgramTree {
 		if(t.height + 1 > height)
 			height = 1 + t.height;
 		numTrees += t.numTrees;
+		
+		int total = 0;
+		for (ProgramTree programTree : children) {
+			total += programTree.numTrees;
+		}
+		if(numTrees != total + 1) {
+			System.out.println("aqui");
+		}
 	}
 	
+	
 	public void replaceChildren(int i, ProgramTree newPt) {
+		int oldNumTrees = children.get(i).numTrees;
 		newPt.parent = this;
-		numTrees -= children.get(i).numTrees;
-		children.set(i, newPt);
-		numTrees += newPt.numTrees;
 		
+		//numTrees -= oldNumTrees;
+		children.set(i, newPt);
+		//numTrees += newPt.numTrees;
+		
+		
+		recalculateNumTreeNodes(newPt.numTrees - oldNumTrees);
+		
+		int total = 1;
+		for (ProgramTree programTree : children) {
+			total += programTree.numTrees;
+		}
+		if(numTrees != total) {
+			System.out.println("distinto");
+		}
+			
 		recalculateHeight(newPt.height, i);
 	}
 	
@@ -76,6 +98,14 @@ public class ProgramTree {
 				secondLargest = increaseHeight ? null: decreaseHeight(parentTree, newPtIndex);
 			}
 				
+		}
+	}
+	
+	private void recalculateNumTreeNodes(int increment) {
+		ProgramTree parentTree = this;
+		while(parentTree != null) {
+			parentTree.numTrees += increment;
+			parentTree = parentTree.parent;
 		}
 	}
 

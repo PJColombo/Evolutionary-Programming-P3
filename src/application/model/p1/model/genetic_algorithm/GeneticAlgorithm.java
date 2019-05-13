@@ -18,6 +18,7 @@ import application.model.p1.model.genetic_algorithm.solution.chromosomes.Chromos
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.ChromosomeFactory;
 import application.model.p1.model.genetic_algorithm.solution.chromosomes.p3_chromosome.ProgramChromosome;
 import application.model.p1.model.genetic_algorithm.solution.genes.Gene;
+import application.model.p1.model.genetic_algorithm.solution.genes.p3_gene.program.ProgramTree;
 import application.model.p1_utils.FitnessComparator;
 import application.model.p1_utils.Pair;
 import application.model.p1_utils.Stat;
@@ -69,8 +70,8 @@ public class GeneticAlgorithm {
 		this.tolerance = tolerance;
 		this.elitism = elitism;
 		
+//		this.bloatingMethodName = "wellfounded";
 		this.bloatingMethodName = "tarpeian";
-		
 		if(this.elitism)
 			this.eliteSize = (int) Math.ceil(popSize * this.ELITISIM_PERCENTAGE);
 		
@@ -123,16 +124,15 @@ public class GeneticAlgorithm {
 		this.createInitialPopulation();
 		this.treatBLoating();
 		stats.add(this.evaluatePopulation());
-
+		this.printPopulation();
 		while(this.generations < this.maxGenNumber) {
 			this.generations++;
+			System.out.println(generations);
 			if(this.elitism)
 				this.extractElite(elite);
-			
 			this.select();
 			this.reproduce();
 			this.mutate();
-			
 			if(this.elitism)
 				this.includeElite(elite);
 			
@@ -143,10 +143,8 @@ public class GeneticAlgorithm {
 			}
 			stats.add(s);
 		}
-		this.printPopulation();
 		return stats;
 	}
-	
 	private void createInitialPopulation() {
 		boolean isFull = true;
 		int currentDepth = 2;
